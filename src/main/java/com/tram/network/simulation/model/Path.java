@@ -42,11 +42,9 @@ public class Path {
         //TODO: implement velocity modifications based on time, traffic and random evenets
 
         Path newPath = newInstance();
-        Cell newTram = source.getTramFromQueue(lines);
 
-        if ( (cells.get(0).getState() == TramState.VOID) & (cells.get(1).getState() == TramState.VOID) & (newTram != null)) {
-            cells.put(0,newTram);
-        }
+        Cell newTram = source.getTramFromQueue(lines);
+        if (newTram != null) newPath.setCellState(0,newTram);
 
         while( cellIterator.hasNext()) {
             Cell cell = cellIterator().next();

@@ -39,8 +39,8 @@ public class Cell {
     }
 
     public String toString() {
-        if (state == TramState.VOID) return "[       ]";
-        return "[" + coords.toString() + ":" + line.toString() + "]";
+        if (state == TramState.VOID) return "[     ]";
+        return "[" + line.toString() + "]";
     }
 
     @Override
