@@ -14,12 +14,6 @@ public class Cell {
         this.line = l;
     }
 
-    public String toString()
-    {
-        String s = (state == TramState.TRAM) ? "T" : "_";
-        return s+coords.toString();
-    }
-
     public TramState getState() {
         return state;
     }
@@ -42,5 +36,16 @@ public class Cell {
 
     public void setLine(Line line) {
         this.line = line;
+    }
+
+    public String toString() {
+        if (state == TramState.VOID) return "[       ]";
+        return "[" + coords.toString() + ":" + line.toString() + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Cell c = (Cell) o;
+        return (c.state == state) & (c.line == line) & (c.coords == coords);
     }
 }

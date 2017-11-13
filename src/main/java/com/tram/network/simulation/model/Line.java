@@ -4,6 +4,12 @@ public class Line {
     private int number = 0;
     private LineDirection direction = LineDirection.NE;
 
+    @Override
+    public boolean equals(Object o) {
+        Line l = (Line) o;
+        return (l.number == this.number) & (l.direction == this.direction);
+    }
+
     public Line(int number, LineDirection direction) {
         this.number = number;
         this.direction = direction;
@@ -23,5 +29,9 @@ public class Line {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public String toString() {
+        return number + "->" + direction.toString();
     }
 }

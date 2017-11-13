@@ -44,7 +44,7 @@ public class Path {
         Path newPath = newInstance();
         Cell newTram = source.getTramFromQueue(lines);
 
-        if ( (cells.get(0).getState() == TramState.VOID) & (cells.get(1).getState() == TramState.VOID)) {
+        if ( (cells.get(0).getState() == TramState.VOID) & (cells.get(1).getState() == TramState.VOID) & (newTram != null)) {
             cells.put(0,newTram);
         }
 
@@ -107,11 +107,6 @@ public class Path {
                     currentCoordinates,
                     cells.get(currentCoordinates).getLine()
             );
-        }
-
-        public void resetCoords()
-        {
-            currentCoordinates = initialCoordinates();
         }
     }
 }
