@@ -4,6 +4,10 @@ public class Line {
     private int number = 0;
     private LineDirection direction = LineDirection.NE;
 
+    private LineDirection oppositeDirection() {
+        return (direction == LineDirection.NE) ? LineDirection.SW : LineDirection.NE;
+    }
+
     @Override
     public boolean equals(Object o) {
         Line l = (Line) o;
@@ -13,6 +17,10 @@ public class Line {
     public Line(int number, LineDirection direction) {
         this.number = number;
         this.direction = direction;
+    }
+
+    public Line reverseDirection() {
+        return new Line(number, oppositeDirection());
     }
 
     public LineDirection getDirection() {

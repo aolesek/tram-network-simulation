@@ -32,5 +32,31 @@ public class NodeTests {
         Assert.assertEquals(original.toString(),path.toString());
     }
 
+    @Test
+    public void loopNodeTests() {
+        Node loopA = new LoopNode();
+        Node loopB = new LoopNode();
+
+        ArrayList<Line> linesNE = new ArrayList<>();
+        linesNE.add(new Line(0, LineDirection.NE));
+
+        ArrayList<Line> linesSW = new ArrayList<>();
+        linesSW.add(new Line(0, LineDirection.SW));
+
+        Path pathNE = new Path(5,2,5,loopA,loopB, linesNE);
+        pathNE.setCellState(0,new Cell(TramState.TRAM,0,new Line(0, LineDirection.NE)));
+        pathNE.setCellState(2,new Cell(TramState.TRAM,2,new Line(0, LineDirection.NE)));
+
+        Path pathSW = new Path(5,2,5,loopB,loopA, linesSW);
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println(pathNE);
+            System.out.println(pathSW);
+            System.out.println("---------------------- NEXT STATE ----------------------");
+            pathNE = pathNE.nextState();
+            pathSW = pathSW.nextState();
+        }
+    }
+
 
 }
