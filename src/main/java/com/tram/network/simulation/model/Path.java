@@ -43,8 +43,13 @@ public class Path {
 
         Path newPath = newInstance();
 
-        Cell newTram = source.getTramFromQueue(lines);
-        if (newTram != null) newPath.setCellState(0,newTram);
+        //TODO: might not be correct
+        if (velocity != 0) {
+            Cell newTram = source.getTramFromQueue(lines);
+            if (newTram != null) newPath.setCellState(0,newTram);
+        }
+
+
 
         while( cellIterator.hasNext()) {
             Cell cell = cellIterator().next();

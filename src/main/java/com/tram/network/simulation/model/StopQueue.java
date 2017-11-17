@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class StopQueue implements Queue {
+
     private List<Cell> trams = new ArrayList<>();
 
     @Override
@@ -24,7 +25,9 @@ public class StopQueue implements Queue {
             Cell tram = iter.next();
             Line line = tram.getLine();
             if (lines.contains(line)) {
+                //TODO: check the timetable, let tram depart only if it's time
                 iter.remove();
+                //TODO: let timetable know that the tram departed (in order to calculate delay)
                 return tram;
             }
         }

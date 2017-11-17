@@ -49,13 +49,20 @@ public class NodeTests {
 
         Path pathSW = new Path(5,2,5,loopB,loopA, linesSW);
 
-        for (int i = 0; i < 10; i++) {
+        String initialPathString = pathNE.toString();
+
+        for (int i = 0; i < 7; i++) {
             System.out.println(pathNE);
             System.out.println(pathSW);
             System.out.println("---------------------- NEXT STATE ----------------------");
             pathNE = pathNE.nextState();
             pathSW = pathSW.nextState();
         }
+        System.out.println(pathNE);
+        System.out.println(pathSW);
+        System.out.println("---------------------- LAST STATE ----------------------");
+
+        Assert.assertEquals(initialPathString, pathNE.toString());
     }
 
 
