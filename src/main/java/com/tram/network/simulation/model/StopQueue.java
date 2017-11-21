@@ -3,10 +3,12 @@ package com.tram.network.simulation.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class StopQueue implements Queue {
 
     private List<Cell> trams = new ArrayList<>();
+    private Map<Line,Timetable> timetables;
 
     @Override
     public void addTram(Cell cell) {
@@ -19,18 +21,18 @@ public class StopQueue implements Queue {
     @Override
     public Cell getTram(List<Line> lines) {
 
-        //TODO: Implement departing tram only if the departure time has passed, it's only sketch based on junction
-        //TODO: Checking lines is not necessary at this case, simply don't want to break something
-        for (ListIterator<Cell> iter = trams.listIterator(); iter.hasNext(); ) {
-            Cell tram = iter.next();
+        Cell tram = trams.get(0);
+        if ( tram != null) {
             Line line = tram.getLine();
-            if (lines.contains(line)) {
-                //TODO: check the timetable, let tram depart only if it's time
-                iter.remove();
-                //TODO: let timetable know that the tram departed (in order to calculate delay)
+            Timetable lineTimetable = timetables.get(line);
+            if (lines.contains(line) && (lineTimetable != null) && lineTimetable.isItDepartureTime() ) {
+                trams.remove(0);
+                lineTimetable.tramDeparted();
                 return tram;
             }
+
         }
+
         return null;
     }
 }
