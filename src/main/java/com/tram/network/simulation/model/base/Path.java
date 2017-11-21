@@ -1,5 +1,7 @@
 package com.tram.network.simulation.model;
 
+import com.tram.network.simulation.model.nodes.Node;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
