@@ -1,8 +1,12 @@
-package com.tram.network.simulation.model;
+package com.tram.network.simulation.model.queues;
+
+import com.tram.network.simulation.model.base.Cell;
+import com.tram.network.simulation.model.base.Line;
+import com.tram.network.simulation.model.timetables.Timetable;
+import com.tram.network.simulation.model.base.TramState;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 public class StopQueue implements Queue {

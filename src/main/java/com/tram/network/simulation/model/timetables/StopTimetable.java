@@ -1,6 +1,7 @@
-package com.tram.network.simulation.model;
+package com.tram.network.simulation.model.timetables;
 
-import java.time.LocalTime;
+import com.tram.network.simulation.model.base.Timer;
+
 import java.util.ArrayList;
 import java.util.List;
 

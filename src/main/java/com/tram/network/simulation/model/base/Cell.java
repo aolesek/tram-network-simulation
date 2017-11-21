@@ -1,4 +1,4 @@
-package com.tram.network.simulation.model;
+package com.tram.network.simulation.model.base;
 
 public class Cell {
 

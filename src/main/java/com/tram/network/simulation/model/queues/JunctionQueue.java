@@ -1,4 +1,8 @@
-package com.tram.network.simulation.model;
+package com.tram.network.simulation.model.queues;
+
+import com.tram.network.simulation.model.base.Cell;
+import com.tram.network.simulation.model.base.Line;
+import com.tram.network.simulation.model.base.TramState;
 
 import java.util.ArrayList;
 import java.util.List;

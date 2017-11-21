@@ -1,4 +1,4 @@
-package com.tram.network.simulation.model;
+package com.tram.network.simulation.model.timetables;
 
 public interface Timetable {
     public Boolean isItDepartureTime() ;

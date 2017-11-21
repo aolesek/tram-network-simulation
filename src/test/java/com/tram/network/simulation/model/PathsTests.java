@@ -1,5 +1,8 @@
 package com.tram.network.simulation.model;
 
+import com.tram.network.simulation.model.base.*;
+import com.tram.network.simulation.model.nodes.BasicNode;
+import com.tram.network.simulation.model.nodes.Node;
 import org.junit.Assert;
 import org.junit.Test;
 
