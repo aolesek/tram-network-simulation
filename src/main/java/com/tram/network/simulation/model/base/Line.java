@@ -9,6 +9,12 @@ public class Line {
     }
 
     @Override
+    public int hashCode() {
+        int dir = (direction == LineDirection.NE) ? 1000 : 2000;
+        return dir + number;
+    }
+
+    @Override
     public boolean equals(Object o) {
         Line l = (Line) o;
         return (l.number == this.number) & (l.direction == this.direction);

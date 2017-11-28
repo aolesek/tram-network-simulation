@@ -14,6 +14,10 @@ public class StopQueue implements Queue {
     private List<Cell> trams = new ArrayList<>();
     private Map<Line,Timetable> timetables;
 
+    public StopQueue(Map<Line,Timetable> timetables) {
+        this.timetables = timetables;
+    }
+
     @Override
     public void addTram(Cell cell) {
         if (cell.getState() == TramState.VOID) throw new IllegalArgumentException();
@@ -24,8 +28,10 @@ public class StopQueue implements Queue {
 
     @Override
     public Cell getTram(List<Line> lines) {
+        Cell tram = null;
+        if ( ! trams.isEmpty() )
+            tram = trams.get(0);
 
-        Cell tram = trams.get(0);
         if ( tram != null) {
             Line line = tram.getLine();
             Timetable lineTimetable = timetables.get(line);

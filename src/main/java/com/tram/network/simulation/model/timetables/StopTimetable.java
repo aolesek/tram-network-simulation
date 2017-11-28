@@ -11,6 +11,11 @@ public class StopTimetable implements Timetable {
     private List<DepartureTime> departures = new ArrayList<>();
     private Timer globalTimer;
 
+    StopTimetable(List<DepartureTime> departures, Timer timer) {
+        this.departures = departures;
+        this.globalTimer = timer;
+    }
+
     @Override
     public Boolean isItDepartureTime() {
         return  globalTimer.getCurrentTime().isGreaterThan( departures.get(0) );

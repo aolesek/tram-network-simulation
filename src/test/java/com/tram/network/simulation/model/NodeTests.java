@@ -4,10 +4,14 @@ import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.nodes.JunctionNode;
 import com.tram.network.simulation.model.nodes.LoopNode;
 import com.tram.network.simulation.model.nodes.Node;
+import com.tram.network.simulation.model.timetables.SimpleTimetable;
+import com.tram.network.simulation.model.timetables.Timetable;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NodeTests {
 
@@ -31,21 +35,29 @@ public class NodeTests {
         //After 18 steps (3 loops:) positions should be the same. Note that waiting at the junction takes always at least one step.
         for (int i=0; i < 18; i++) {
             path = path.nextState();
+            System.out.println(path);
         }
 
+        System.out.println("Result:");
+        System.out.println(original);
+        System.out.println(path);
         Assert.assertEquals(original.toString(),path.toString());
     }
 
     @Test
     public void loopNodeTests() {
-        Node loopA = new LoopNode();
-        Node loopB = new LoopNode();
-
         ArrayList<Line> linesNE = new ArrayList<>();
         linesNE.add(new Line(0, LineDirection.NE));
 
         ArrayList<Line> linesSW = new ArrayList<>();
         linesSW.add(new Line(0, LineDirection.SW));
+
+        Map<Line,Timetable> timetables = new HashMap<>();
+        timetables.put(new Line(0, LineDirection.NE), new SimpleTimetable());
+        timetables.put(new Line(0, LineDirection.SW), new SimpleTimetable());
+
+        Node loopA = new LoopNode(timetables);
+        Node loopB = new LoopNode(timetables);
 
         Path pathNE = new Path(5,2,5,loopA,loopB, linesNE);
         pathNE.setCellState(0,new Cell(TramState.TRAM,0,new Line(0, LineDirection.NE)));
