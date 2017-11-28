@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c3add5cb-4687-4d71-a2ce-db3f5ddbe347" name="Default" comment="">
+    <list default="true" id="c3add5cb-4687-4d71-a2ce-db3f5ddbe347" name="Default" comment="Add simple timetable to make test passing, add line hashMap method to use Line object as key in maps">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/base/GlobalTimer.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/timetables/SimpleTimetable.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/classes/com/tram/network/simulation/model/BasicNode.class" afterPath="" />
@@ -938,7 +938,7 @@
       <workItem from="1511457141269" duration="514000" />
       <workItem from="1511735170996" duration="589000" />
       <workItem from="1511786053918" duration="3386000" />
-      <workItem from="1511864260176" duration="2902000" />
+      <workItem from="1511864260176" duration="2879000" />
     </task>
     <task id="LOCAL-00001" summary="Add Track class sketch">
       <created>1510327684697</created>
@@ -1032,7 +1032,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51401000" />
+    <option name="totallyTimeSpent" value="51378000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -1083,8 +1083,7 @@
     <MESSAGE value="Stop timetable, timer interface, departure time class" />
     <MESSAGE value="Stop queue modified to work with stop timetable" />
     <MESSAGE value="Add simple timetable to make test passing, add line hashMap method to use Line object as key in maps" />
-    <MESSAGE value="Add simple timetable to make test passing, add line hashMap method to use Line object as an key in maps" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add simple timetable to make test passing, add line hashMap method to use Line object as an key in maps" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add simple timetable to make test passing, add line hashMap method to use Line object as key in maps" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
