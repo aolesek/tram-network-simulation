@@ -12,4 +12,9 @@ public class BasicNode implements Node {
 
     @Override
     public Cell getTramFromQueue(List<Line> lines) { return null; }
+
+    @Override
+    public void addTramToQueue(Cell cell) {
+
+    }
 }

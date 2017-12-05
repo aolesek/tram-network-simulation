@@ -9,11 +9,13 @@ public class StopTimetable implements Timetable {
 
 
     private List<DepartureTime> departures = new ArrayList<>();
+    private List<DepartureTime> nextDayDepartures = new ArrayList<>();
     private Timer globalTimer;
 
     StopTimetable(List<DepartureTime> departures, Timer timer) {
         this.departures = departures;
         this.globalTimer = timer;
+        nextDayDepartures.addAll(departures);
     }
 
     @Override
@@ -23,7 +25,13 @@ public class StopTimetable implements Timetable {
 
     @Override
     public void tramDeparted() {
-        if (!departures.isEmpty())
+        if (!departures.isEmpty()) {
             departures.remove(0);
+        }
+
+        if (departures.isEmpty()) {
+            departures.addAll(nextDayDepartures);
+        }
+
     }
 }

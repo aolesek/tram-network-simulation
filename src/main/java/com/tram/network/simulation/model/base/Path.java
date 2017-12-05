@@ -13,6 +13,11 @@ public class Path {
     private int defaultVelocity = 5;
     private Node source, destination;
     private List<Line> lines;
+    private String id = new String();
+
+    public String getId() {
+        return id;
+    }
 
     private CellIterator cellIterator = new CellIterator();
 
@@ -53,7 +58,7 @@ public class Path {
 
 
 
-        while( cellIterator.hasNext()) {
+        while( cellIterator.hasNext() ) {
             Cell cell = cellIterator().next();
             if (cell.getState() == TramState.TRAM) {
                 int newCoords = cell.getCoords() + velocity;
@@ -88,6 +93,14 @@ public class Path {
     protected int initialCoordinates()
     {
         return -1;
+    }
+
+    public Map<Integer,Cell> getCells() {
+        return cells;
+    }
+
+    public int getLength() {
+        return length;
     }
 
     public String toString() { return "Path:" + cells.toString(); }

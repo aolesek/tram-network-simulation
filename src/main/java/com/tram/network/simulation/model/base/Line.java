@@ -8,6 +8,13 @@ public class Line {
         return (direction == LineDirection.NE) ? LineDirection.SW : LineDirection.NE;
     }
 
+    public Line(String str) {
+        String [] tokens = str.split(" ");
+        this.number = Integer.parseInt(tokens[0]);
+
+        this.direction = (tokens[1].matches("NE")) ? LineDirection.NE : LineDirection.SW;
+    }
+
     @Override
     public int hashCode() {
         int dir = (direction == LineDirection.NE) ? 1000 : 2000;

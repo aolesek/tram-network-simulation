@@ -56,8 +56,8 @@ public class NodeTests {
         timetables.put(new Line(0, LineDirection.NE), new SimpleTimetable());
         timetables.put(new Line(0, LineDirection.SW), new SimpleTimetable());
 
-        Node loopA = new LoopNode(timetables);
-        Node loopB = new LoopNode(timetables);
+        Node loopA = new LoopNode("LoopA",timetables);
+        Node loopB = new LoopNode("LoopB",timetables);
 
         Path pathNE = new Path(5,2,5,loopA,loopB, linesNE);
         pathNE.setCellState(0,new Cell(TramState.TRAM,0,new Line(0, LineDirection.NE)));

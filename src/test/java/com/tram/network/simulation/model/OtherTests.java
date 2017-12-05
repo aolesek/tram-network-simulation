@@ -1,5 +1,7 @@
 package com.tram.network.simulation.model;
 
+import com.tram.network.simulation.model.base.Line;
+import com.tram.network.simulation.model.base.LineDirection;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -22,5 +24,11 @@ public class OtherTests {
         departures.remove(0);
 
         System.out.println(departures);
+    }
+
+    @Test
+    public void lineStringParse() {
+       Line line = new Line("2 SW");
+       System.out.println(line);
     }
 }

@@ -10,19 +10,31 @@ import java.util.Map;
 
 public class StopNode implements Node {
 
+    String name;
     private StopQueue queue;
 
-    public StopNode(Map<Line,Timetable> timetables) {
+    public StopNode(String name, Map<Line,Timetable> timetables) {
+        this.name = name;
         queue = new StopQueue(timetables);
     }
 
     @Override
     public Cell getTramFromQueue(List<Line> lines) {
-        return queue.getTram(lines);
+        Cell tram = queue.getTram(lines);
+        if (tram != null)
+            System.out.println("Tramwaj "  + tram + " opuścił przystanek " + name);
+        return tram;
     }
 
     @Override
     public void tramArrived(Cell cell) {
+        if (cell != null)
+            System.out.println("Tramwaj " + cell + " dotarł do przystanku " + name);
+        queue.addTram(cell);
+    }
+
+    @Override
+    public void addTramToQueue(Cell cell) {
         queue.addTram(cell);
     }
 }

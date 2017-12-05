@@ -6,9 +6,11 @@ public class DepartureTime implements Comparable<DepartureTime>{
     private int time = 0;
 
     public DepartureTime(int hour, int minute) {
-        if ( (hour > 23) | (hour < 0) | (minute < 0) | (minute > 59))
-            throw new IllegalArgumentException();
-        this.time = 1000*hour + minute;
+        if ( (hour > 23) | (hour < 0) | (minute < 0) | (minute > 59)) {
+            this.time = 0;
+        } else {
+            this.time = 1000*hour + minute;
+        }
     }
 
     public DepartureTime addMinutes (int minutes) {
@@ -34,7 +36,7 @@ public class DepartureTime implements Comparable<DepartureTime>{
     }
 
     public int compareTo(DepartureTime t) {
-        if ( Integer.compare(this.getRawTime(), t.getRawTime()) > 0 ) {
+        if ( this.getRawTime() < t.getRawTime() ) {
             return -1;
         } else if ( this.getRawTime() == t.getRawTime() ) {
             return 0;
