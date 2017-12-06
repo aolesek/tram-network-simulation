@@ -1,5 +1,6 @@
 package com.tram.network.simulation.model.base;
 
+import com.tram.network.simulation.model.geo.GeoPath;
 import com.tram.network.simulation.model.nodes.Node;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class Path {
     private Node source, destination;
     private List<Line> lines;
     private String id = new String();
+   // private GeoPath geoPath;
 
     public String getId() {
         return id;
