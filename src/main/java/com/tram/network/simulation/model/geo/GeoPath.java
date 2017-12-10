@@ -5,6 +5,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GeoPath {
@@ -26,6 +27,11 @@ public class GeoPath {
         this.length = calculateLength(points);
     }
 
+    public GeoPath(List<Coords2D> pts, double len) {
+        this.points = pts;
+        this.length = len;
+    }
+
     public double calculateLength(List<Coords2D> pts) {
         double distance = 0;
 
@@ -40,6 +46,14 @@ public class GeoPath {
         }
 
         return distance;
+    }
+
+    public GeoPath reverse() {
+        List <Coords2D> newPoints = new ArrayList<>();
+        newPoints.addAll(points);
+        Collections.reverse(newPoints);
+
+        return new GeoPath(newPoints, length);
     }
 
     public Coords2D getProgCoordinates(double progress) {

@@ -27,7 +27,7 @@ public class GlobalTimer implements Timer {
 
                 if (cell.getState() == TramState.TRAM) {
                     trams.add(
-                            new TramStatus(cell.getLine(), path.getId(), progress)
+                            new TramStatus(cell.getLine(), path.getId(), path.getCoordsByProgress(progress))
                     );
                 }
             }

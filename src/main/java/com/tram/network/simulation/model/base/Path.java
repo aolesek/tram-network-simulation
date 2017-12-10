@@ -1,5 +1,6 @@
 package com.tram.network.simulation.model.base;
 
+import com.tram.network.simulation.model.geo.Coords2D;
 import com.tram.network.simulation.model.geo.GeoPath;
 import com.tram.network.simulation.model.nodes.Node;
 
@@ -15,21 +16,34 @@ public class Path {
     private Node source, destination;
     private List<Line> lines;
     private String id = new String();
-   // private GeoPath geoPath;
+    private GeoPath geoPath;
 
     public String getId() {
         return id;
     }
 
+    public Coords2D getCoordsByProgress(double progress) {
+        if (geoPath != null) {
+            return geoPath.getProgCoordinates(progress);
+        }
+
+        return new Coords2D(0.0, 0.0);
+    }
+
     private CellIterator cellIterator = new CellIterator();
 
     public Path (int length, int velocity, int defaultVelocity, Node source, Node destination, List<Line> lines) {
+        this(length, velocity, defaultVelocity, source, destination, lines, null);
+    }
+
+    public Path (int length, int velocity, int defaultVelocity, Node source, Node destination, List<Line> lines, GeoPath geopath) {
         this.length = length;
         this.velocity = velocity;
         this.defaultVelocity = defaultVelocity;
         this.source = source;
         this.destination = destination;
         this.lines = lines;
+        this.geoPath = geopath;
 
         for (int i = 0; i < length; i++) {
             cells.put(i, new Cell(TramState.VOID, i, new Line(0,LineDirection.NE)));
@@ -38,7 +52,7 @@ public class Path {
 
     protected Path newInstance()
     {
-        return new Path(length, velocity, defaultVelocity, source, destination, lines);
+        return new Path(length, velocity, defaultVelocity, source, destination, lines, this.geoPath);
     }
 
     public void setCellState(int coords, Cell cell)
