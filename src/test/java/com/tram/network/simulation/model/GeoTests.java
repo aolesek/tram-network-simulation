@@ -6,7 +6,7 @@ import org.junit.Test;
 public class GeoTests {
     @Test
     public void DistanceTests() {
-        GeoPath path = new GeoPath("49.9334083, 20.0361306; 49.9331472, 20.0394250");
-        System.out.println(path.calculateLength()*100000);
+        GeoPath path = new GeoPath("50.065052, 19.916607; 50.064671, 19.916474");
+        System.out.println(path.getProgCoordinates(0.25));
     }
 }
