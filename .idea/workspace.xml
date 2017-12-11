@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3add5cb-4687-4d71-a2ce-db3f5ddbe347" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/com/tram/network/simulation/application/Application.class" afterPath="$PROJECT_DIR$/out/production/classes/com/tram/network/simulation/application/Application.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/application/Application.java" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/application/Application.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/base/GlobalTimer.java" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/base/GlobalTimer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/BasicNode.java" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/BasicNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/JunctionNode.java" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/JunctionNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/LoopNode.java" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/LoopNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/Node.java" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/Node.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/StopNode.java" afterPath="$PROJECT_DIR$/src/main/java/com/tram/network/simulation/model/nodes/StopNode.java" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -43,7 +37,7 @@
       <file leaf-file-name="Application.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/tram/network/simulation/application/Application.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
+            <state relative-caret-position="17">
               <caret line="295" column="12" lean-forward="true" selection-start-line="295" selection-start-column="12" selection-end-line="295" selection-end-column="12" />
               <folding />
             </state>
@@ -902,7 +896,7 @@
       <workItem from="1512679808638" duration="1781000" />
       <workItem from="1512918509639" duration="8403000" />
       <workItem from="1512936652874" duration="3567000" />
-      <workItem from="1512986452134" duration="12223000" />
+      <workItem from="1512986452134" duration="13397000" />
     </task>
     <task id="LOCAL-00001" summary="Add Track class sketch">
       <created>1510327684697</created>
@@ -995,7 +989,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512998553047</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Trams waiting at the stops are now showed on map too.">
+      <created>1512999346095</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1512999346095</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1031,10 +1032,11 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="100924000" />
+    <option name="totallyTimeSpent" value="102098000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -1117,7 +1119,8 @@
     <MESSAGE value="Add GeoPath class (coordinates translations)" />
     <MESSAGE value="GeoPath class can calculate coordinates based on progress on path." />
     <MESSAGE value="Add simple frontend: map and markers representing trams." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add simple frontend: map and markers representing trams." />
+    <MESSAGE value="Trams waiting at the stops are now showed on map too." />
+    <option name="LAST_COMMIT_MESSAGE" value="Trams waiting at the stops are now showed on map too." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1552,7 +1555,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/tram/network/simulation/application/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
+        <state relative-caret-position="17">
           <caret line="295" column="12" lean-forward="true" selection-start-line="295" selection-start-column="12" selection-end-line="295" selection-end-column="12" />
           <folding />
         </state>
