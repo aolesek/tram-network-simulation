@@ -28,6 +28,7 @@ public class LoopNode implements Node {
         queue = new StopQueue(timetables);
     }
 
+    @Override
     public List<TramStatus> getTrams() {
         List<TramStatus> trams = new ArrayList<>();
         List<Cell> stoppedTrams = queue.getStoppedTrams();

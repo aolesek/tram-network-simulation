@@ -1,5 +1,6 @@
 package com.tram.network.simulation.model.base;
 
+import com.tram.network.simulation.model.nodes.Node;
 import com.tram.network.simulation.model.timetables.DepartureTime;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 public class GlobalTimer implements Timer {
     private List<Path> pathNetwork;
+    private List<Node> nodeNetwork;
     private DepartureTime currentTime = new DepartureTime(0,0);
     private Integer oneStepTime = 10;
 
@@ -33,11 +35,19 @@ public class GlobalTimer implements Timer {
             }
         }
 
+        for (Node n : nodeNetwork) {
+            trams.addAll(n.getTrams());
+        }
+
         return trams;
     }
 
-    public void setPathNetwork(List<Path> network) {
-        this.pathNetwork = network;
+    public void setPathNetwork(List<Path> pnetwork) {
+        this.pathNetwork = pnetwork;
+    }
+
+    public void setNodeNetwork(List<Node> nnetwork) {
+        this.nodeNetwork = nnetwork;
     }
 
     public List<Path> getPathNetwork() {

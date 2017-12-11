@@ -56,7 +56,8 @@ public class Application {
         timetables2.put(new Line(1, LineDirection.NE), s1t1);
         timetables2.put(new Line(1, LineDirection.SW), s1t2);
 
-        Node s1 = new StopNode("S1",timetables2);
+        Node s1 = new StopNode(new Coords2D("50.06277975435237, 19.91771951317219"),"S1",timetables2);
+        stops.add(s1);
 
         // Stop 2
         TimetableFactory f3 = new TimetableFactory(timer);
@@ -67,7 +68,8 @@ public class Application {
         timetables3.put(new Line(1, LineDirection.NE), s2t1);
         timetables3.put(new Line(1, LineDirection.SW), s2t2);
 
-        Node s2 = new StopNode("S2",timetables3);
+        Node s2 = new StopNode(new Coords2D("50.062118563875416, 19.917547851795238"),"S2",timetables3);
+        stops.add(s2);
 
         // Stop 3
         TimetableFactory f4 = new TimetableFactory(timer);
@@ -78,7 +80,8 @@ public class Application {
         timetables4.put(new Line(2, LineDirection.NE), s3t1);
         timetables4.put(new Line(2, LineDirection.SW), s3t2);
 
-        Node s3 = new StopNode("S3",timetables4);
+        Node s3 = new StopNode(new Coords2D("50.06204968934332, 19.916592985385936"),"S3",timetables4);
+        stops.add(s3);
 
         // Junction 2
 
@@ -93,7 +96,8 @@ public class Application {
         timetables5.put(new Line(1, LineDirection.SW), l2t1);
         timetables5.put(new Line(2, LineDirection.SW), l2t2);
 
-        Node l2 = new LoopNode("L2",timetables5);
+        Node l2 = new LoopNode(new Coords2D("50.060823706126, 19.91778388618855"),"L2",timetables5);
+        stops.add(l2);
 
         // PATHS
 
@@ -296,6 +300,7 @@ public class Application {
 //        );
 
         timer.setPathNetwork(paths);
+        timer.setNodeNetwork(stops);
 
 
 
