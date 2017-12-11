@@ -9,7 +9,7 @@ import java.util.Map;
 public class GlobalTimer implements Timer {
     private List<Path> pathNetwork;
     private DepartureTime currentTime = new DepartureTime(0,0);
-    private Integer oneStepTime = 30;
+    private Integer oneStepTime = 10;
 
     public void setOneStepTime(Integer oneStepTime) {
         this.oneStepTime =  oneStepTime;
@@ -27,7 +27,7 @@ public class GlobalTimer implements Timer {
 
                 if (cell.getState() == TramState.TRAM) {
                     trams.add(
-                            new TramStatus(cell.getLine(), path.getId(), path.getCoordsByProgress(progress))
+                            new TramStatus(cell.getLine(), path.getId(), path.getCoordsByProgress(progress), progress)
                     );
                 }
             }

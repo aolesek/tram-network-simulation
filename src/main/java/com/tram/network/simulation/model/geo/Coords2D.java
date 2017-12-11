@@ -24,10 +24,18 @@ public class Coords2D {
         this.y = y;
     }
 
+    public Coords2D(String coordinates) {
+        String [] xy = coordinates.split(", ");
+        this.x = Double.parseDouble(xy[0]);
+        this.y = Double.parseDouble(xy[1]);
+    }
+
     public Coords2D(Coords2D coords) {
         this.x = coords.getX();
         this.y = coords.getY();
     }
+
+
 
     public Coords2D copy() {
         return new Coords2D(this.x, this.y);

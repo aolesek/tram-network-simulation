@@ -33,16 +33,16 @@ public class GeoPath {
     }
 
     public double calculateLength(List<Coords2D> pts) {
-        double distance = 0;
+        double distance = 0.0;
 
         if (pts.size() <= 1)
             return 0.0;
 
         Coords2D oldpoint = pts.get(0).copy();
 
-        for(Coords2D point : pts) {
-            distance += distance(point.getX(), oldpoint.getX(), point.getY(), oldpoint.getY(), 0.0, 0.0);
-            oldpoint = point.copy();
+        for(int i = 1; i < pts.size(); i++) {
+            distance += distance(pts.get(i).getX(), oldpoint.getX(), pts.get(i).getY(), oldpoint.getY(), 0.0, 0.0);
+            oldpoint = pts.get(i).copy();
         }
 
         return distance;
@@ -60,10 +60,10 @@ public class GeoPath {
         double distanceFromStart = progress * length;
         int lastPassedPointNumber = 0;
 
-        for (int i = 1; i < points.size(); i++) {
-            List<Coords2D> part = points.subList(0, i);
+        for (int i = 1; i <= points.size(); i++) {
+            List<Coords2D> part = points.subList(0, i+1);
 
-            if (distanceFromStart < calculateLength(part)) {
+            if (distanceFromStart <= (calculateLength(part))) {
                 lastPassedPointNumber = i - 1;
 
                 break;
@@ -76,7 +76,9 @@ public class GeoPath {
         Vector2D vector = new Vector2D(lastPoint.getX(), lastPoint.getY(), nextPoint.getX(), nextPoint.getY());
         vector.normalize();
 
-        double distanceFromLastPoint = distanceFromStart - calculateLength(points.subList(0,lastPassedPointNumber));
+        double distanceFromLastPoint = distanceFromStart - calculateLength(points.subList(0,lastPassedPointNumber+1));
+        if (distanceFromLastPoint < 0.0)
+            distanceFromLastPoint = 0.0;
 
         vector.multiply(distanceFromLastPoint);
 

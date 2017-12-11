@@ -3,6 +3,7 @@ package com.tram.network.simulation.application;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tram.network.simulation.model.base.*;
+import com.tram.network.simulation.model.geo.Coords2D;
 import com.tram.network.simulation.model.geo.GeoPath;
 import com.tram.network.simulation.model.nodes.JunctionNode;
 import com.tram.network.simulation.model.nodes.LoopNode;
@@ -12,6 +13,7 @@ import com.tram.network.simulation.model.timetables.SimpleTimetable;
 import com.tram.network.simulation.model.timetables.Timetable;
 import com.tram.network.simulation.model.timetables.TimetableFactory;
 import spark.ResponseTransformer;
+import spark.Spark;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ public class Application {
         GlobalTimer timer = new GlobalTimer();
 
         List<Path> paths = new ArrayList<>();
+        List<Node> stops = new ArrayList<>();
 
         // Loop 1
         TimetableFactory f1 = new TimetableFactory(timer);
@@ -37,7 +40,8 @@ public class Application {
         timetables.put(new Line(1, LineDirection.NE), l1t1); //l1t1
         timetables.put(new Line(2, LineDirection.NE), l1t2 ); //l1t2
 
-        Node l1 = new LoopNode("L1",timetables);
+        Node l1 = new LoopNode(new Coords2D("50.064012574757506, 19.916539341205638"), "L1",timetables);
+        stops.add(l1);
 
         // Junction 1
 
@@ -95,97 +99,111 @@ public class Application {
 
         //L1J1 Paths
 
-        GeoPath l1j1g = new GeoPath("50.064378, 19.917861; 50.064273, 19.917574; 50.064331, 19.917507; 50.064419, 19.917387; 50.064489, 19.917262; 50.064529, 19.917168; 50.064562, 19.917054; 50.064672, 19.916475; 50.064394, 19.916399; 50.064165, 19.916448; 50.063996, 19.916549");
+        GeoPath l1j1g = new GeoPath(
+"50.0643432059077, 19.917832091447853; 50.064277778138916, 19.917579963800453; 50.06423645529159, 19.917327836153053; 50.064167583800284, 19.916458800432228; 50.064033284107836, 19.916539266702674"
+        );
         ArrayList<Line> l1j1lines = new ArrayList<>();
         l1j1lines.add(new Line(1, LineDirection.NE));
         l1j1lines.add(new Line(2, LineDirection.NE));
         paths.add(
-                new Path(10,2,7,l1,j1, l1j1lines, l1j1g)
+                new Path(100,2,7,l1,j1, l1j1lines, l1j1g)
         );
         ArrayList<Line> j1l1lines = new ArrayList<>();
         j1l1lines.add(new Line(1, LineDirection.SW));
         j1l1lines.add(new Line(2, LineDirection.SW));
         paths.add(
-                new Path(10,2,7,j1,l1, j1l1lines, l1j1g.reverse())
+                new Path(100,2,7,j1,l1, j1l1lines, l1j1g.reverse())
         );
 
         //J1S1 PATHS
-        GeoPath j1s1g = new GeoPath("50.063996, 19.916549; 50.063864, 19.916754; 50.063382, 19.917268; 50.063250, 19.917375; 50.063087, 19.917414; 50.062907, 19.917447; 50.062867, 19.917627");
+        GeoPath j1s1g = new GeoPath(
+"50.06403672769439, 19.916539266702674; 50.063637270005096, 19.91702742874338; 50.06334800546384, 19.917327836153053; 50.06321714712212, 19.91739757358744; 50.06309661938633, 19.91741903125956; 50.06291754904821, 19.917445853349705; 50.06290721804675, 19.917553141710304; 50.06287278135923, 19.917638972398777; 50.062821126281584, 19.917692616579075; 50.06277635850261, 19.917703345415134"
+        );
         ArrayList<Line> j1s1lines = new ArrayList<>();
         j1s1lines.add(new Line(1, LineDirection.NE));
         paths.add(
-                new Path(8,2,7,j1,s1, j1s1lines, j1s1g)
+                new Path(80,2,7,j1,s1, j1s1lines, j1s1g)
         );
 
         ArrayList<Line> s1j1lines = new ArrayList<>();
         s1j1lines.add(new Line(1, LineDirection.SW));
         paths.add(
-                new Path(8,2,7,s1,j1, s1j1lines, j1s1g.reverse())
+                new Path(80,2,7,s1,j1, s1j1lines, j1s1g.reverse())
         );
 
         //J1S3 PATHS
-        GeoPath j1s3g = new GeoPath("50.063996, 19.916549; 50.063175, 19.916585; 50.062748, 19.916529; 50.062321, 19.916474; 50.062255, 19.916487");
+        GeoPath j1s3g = new GeoPath(
+                "50.064040171280695, 19.916533902284645; 50.06380256324548, 19.91656072437479; 50.063013971621004, 19.91657681762888; 50.06275225275815, 19.916539266702674; 50.06248020137397, 19.916485622522373; 50.0622288107487, 19.916485622522373; 50.06217371125755, 19.916490986940403; 50.06203596225279, 19.91657145321085"
+        );
         ArrayList<Line> j1s3lines = new ArrayList<>();
         j1s3lines.add(new Line(2, LineDirection.NE));
         paths.add(
-                new Path(10,2,7,j1,s3, j1s3lines, j1s3g)
+                new Path(100,2,7,j1,s3, j1s3lines, j1s3g)
         );
 
         ArrayList<Line> s3j1lines = new ArrayList<>();
         s3j1lines.add(new Line(2, LineDirection.SW));
         paths.add(
-                new Path(10,2,7,s3,j1, s3j1lines, j1s3g.reverse())
+                new Path(100,2,7,s3,j1, s3j1lines, j1s3g.reverse())
         );
 
         //s1s2 PATHS
-        GeoPath s1s2g = new GeoPath("50.062867, 19.917627; 50.062770, 19.917703; 50.062655, 19.917650; 50.062603, 19.917496; 50.062414, 19.917520; 50.062272, 19.917543");
+        GeoPath s1s2g = new GeoPath(
+                "50.06277635850261, 19.917692616579075; 50.06271781595939, 19.91768725216105; 50.06266960439957, 19.91765506565287; 50.06262828016684, 19.917574599382423; 50.062614505414686, 19.917494133111976; 50.06242165846932, 19.91751559078409; 50.062104836804615, 19.917558506128334"
+        );
         ArrayList<Line> s1s2lines = new ArrayList<>();
         s1s2lines.add(new Line(1, LineDirection.NE));
         paths.add(
-                new Path(4,2,7,s1,s2, s1s2lines, s1s2g)
+                new Path(40,2,7,s1,s2, s1s2lines, s1s2g)
         );
 
         ArrayList<Line> s2s1lines = new ArrayList<>();
         s2s1lines.add(new Line(1, LineDirection.SW));
         paths.add(
-                new Path(4,2,7,s2,s1, s2s1lines, s1s2g.reverse())
+                new Path(40,2,7,s2,s1, s2s1lines, s1s2g.reverse())
         );
 
         //s2j2 PATHS
-        GeoPath s2j2g = new GeoPath("50.062272, 19.917543; 50.062106, 19.917569; 50.061092, 19.917729; 50.060880, 19.917767");
+        GeoPath s2j2g = new GeoPath(
+                "50.06210139307936, 19.917553141710304; 50.06108203954093, 19.917719438669224; 50.06080309104802, 19.917773082849525"
+        );
         ArrayList<Line> s2j2lines = new ArrayList<>();
         s2j2lines.add(new Line(1, LineDirection.NE));
         paths.add(
-                new Path(8,2,7,s2,j2, s2j2lines, s2j2g)
+                new Path(80,2,7,s2,j2, s2j2lines, s2j2g)
         );
 
         ArrayList<Line> j2s2lines = new ArrayList<>();
         j2s2lines.add(new Line(1, LineDirection.SW));
         paths.add(
-                new Path(8,2,7,j2,s2, j2s2lines, s2j2g.reverse())
+                new Path(80,2,7,j2,s2, j2s2lines, s2j2g.reverse())
         );
 
         //s3j2 PATHS
-        GeoPath s3j2g = new GeoPath("50.062867, 19.917627; 50.062770, 19.917703; 50.062655, 19.917650; 50.062603, 19.917496; 50.062414, 19.917520; 50.062272, 19.917543");
+        GeoPath s3j2g = new GeoPath(
+                "50.06203596225279, 19.91658754646494; 50.06189476911242, 19.916694834825538; 50.06165026293518, 19.916710928079628; 50.0614884060478, 19.916769936677955; 50.061350655075195, 19.91687722503855; 50.06119912854848, 19.917070344087623; 50.06106482054512, 19.91728492080881; 50.06087885499666, 19.917714074251194; 50.06080653486645, 19.917773082849525"
+        );
         ArrayList<Line> s3j2lines = new ArrayList<>();
         s3j2lines.add(new Line(2, LineDirection.NE));
         paths.add(
-                new Path(10,2,7,s3,j2, s3j2lines, s3j2g)
+                new Path(100,2,7,s3,j2, s3j2lines, s3j2g)
         );
 
         ArrayList<Line> j2s3lines = new ArrayList<>();
         j2s3lines.add(new Line(2, LineDirection.SW));
         paths.add(
-                new Path(10,2,7,j2,s3, j2s3lines, s3j2g.reverse())
+                new Path(100,2,7,j2,s3, j2s3lines, s3j2g.reverse())
         );
 
         //j2l2 PATHS
-        GeoPath j2l2g = new GeoPath("50.060880, 19.917767; 50.060366, 19.917849; 50.060098, 19.919571");
+        GeoPath j2l2g = new GeoPath(
+                "50.06082031013774, 19.917773082849525; 50.06043460104614, 19.917832091447853; 50.060369167946135, 19.917869642374058; 50.06009710304709, 19.919586256143592"
+        );
         ArrayList<Line> j2l2lines = new ArrayList<>();
         j2l2lines.add(new Line(1, LineDirection.NE));
         j2l2lines.add(new Line(2, LineDirection.NE));
         paths.add(
-                new Path(10,2,7,j2,l2, j2l2lines, j2l2g)
+                new Path(100,2,7,j2,l2, j2l2lines, j2l2g)
         );
 
         ArrayList<Line> l2j2lines = new ArrayList<>();
@@ -193,14 +211,14 @@ public class Application {
         l2j2lines.add(new Line(2, LineDirection.SW));
 
         paths.add(
-                new Path(10,2,7,l2, j2, l2j2lines, j2l2g.reverse())
+                new Path(100,2,7,l2, j2, l2j2lines, j2l2g.reverse())
         );
 
         //Simple network is now initialized.
         //Adding initial trams
 
         l1.addTramToQueue(
-                new Cell(TramState.TRAM,0,new Line(2, LineDirection.NE))
+                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
         );
 
         l1.addTramToQueue(
@@ -239,6 +257,43 @@ public class Application {
         l2.addTramToQueue(
                 new Cell(TramState.TRAM,0,new Line(2, LineDirection.SW))
         );
+
+
+        //ONE PATH EXAMPLE
+
+//        Map<Line,Timetable> timetables = new HashMap<>();
+//        timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable()); //l1t1
+//        timetables.put(new Line(2, LineDirection.NE), new SimpleTimetable() ); //l1t2
+//
+//        Node l1 = new LoopNode("L1",timetables);
+//
+//
+//        Map<Line,Timetable> timetables2 = new HashMap<>();
+//        timetables2.put(new Line(1, LineDirection.SW), new SimpleTimetable()); //l1t1
+//        timetables2.put(new Line(2, LineDirection.SW), new SimpleTimetable() ); //l1t2
+//
+//        Node l2 = new LoopNode("L2",timetables2);
+//
+//
+//        GeoPath l1j1g = new GeoPath(
+//                "50.06439829692669, 19.91359957493842; 50.06123700424441, 19.91235502995551; 50.06046558966059, 19.917376125231385"
+//        );
+//        ArrayList<Line> l1j1lines = new ArrayList<>();
+//        l1j1lines.add(new Line(1, LineDirection.NE));
+//        l1j1lines.add(new Line(2, LineDirection.NE));
+//        paths.add(
+//                new Path("a-b",100,1,7,l1,l2, l1j1lines, l1j1g)
+//        );
+//        ArrayList<Line> j1l1lines = new ArrayList<>();
+//        j1l1lines.add(new Line(1, LineDirection.SW));
+//        j1l1lines.add(new Line(2, LineDirection.SW));
+//        paths.add(
+//                new Path("b-c",100,1,7,l2,l1, j1l1lines, l1j1g.reverse())
+//        );
+//
+//        l1.addTramToQueue(
+//                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
+//        );
 
         timer.setPathNetwork(paths);
 
@@ -247,8 +302,7 @@ public class Application {
         Thread thread = new Thread(new TimerGovernor(timer));
         thread.start();
 
-
-
+        externalStaticFileLocation("C:\\Users\\arek\\Desktop\\symulacje\\tram-network-simulation\\src\\main\\resources\\public");
 
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final ResponseTransformer json = gson::toJson;
