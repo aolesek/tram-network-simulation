@@ -15,7 +15,7 @@ public class Path {
     private int defaultVelocity = 5;
     private Node source, destination;
     private List<Line> lines;
-    private String id = new String();
+    private String id;
     private GeoPath geoPath;
 
     public String getId() {
@@ -32,6 +32,10 @@ public class Path {
 
     private CellIterator cellIterator = new CellIterator();
 
+    public Path(String id, int length, int velocity, int defaultVelocity, Node source, Node destination, List<Line> lines, GeoPath geopath) {
+        this(length, velocity, defaultVelocity, source, destination, lines, geopath);
+        this.id = id;
+    }
     public Path (int length, int velocity, int defaultVelocity, Node source, Node destination, List<Line> lines) {
         this(length, velocity, defaultVelocity, source, destination, lines, null);
     }

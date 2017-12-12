@@ -1,0 +1,36 @@
+#mapid {
+  height: 650px;
+  width: 1150px;
+  display: inline-block;
+  background-color: #fbfbfb;
+  float: left;
+}
+
+#infoparent {
+  width: 320px;
+  height: 650px;
+  display: inline-block;
+  background-color: #a2a2a2;
+  float: right;
+}
+
+#info {
+  background-color: #fafafa ;
+}
+
+#tracking {
+  background-color: #fcfcfc;
+}
+
+/* Change cursor when mousing over clickable layer */
+.leaflet-clickable {
+  cursor: default !important;
+}
+/* Change cursor when over entire map */
+.leaflet-container {
+  cursor: default !important;
+}
+
+.my-div-span {
+  font-size: 10px;
+}

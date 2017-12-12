@@ -1,9 +1,11 @@
 package com.tram.network.simulation.model.nodes;
 
 import com.tram.network.simulation.model.base.Cell;
+import com.tram.network.simulation.model.base.TramStatus;
 import com.tram.network.simulation.model.queues.JunctionQueue;
 import com.tram.network.simulation.model.base.Line;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JunctionNode implements Node {
@@ -37,5 +39,10 @@ public class JunctionNode implements Node {
     @Override
     public void addTramToQueue(Cell cell) {
         queue.addTram(cell);
+    }
+
+    @Override
+    public List<TramStatus> getTrams() {
+        return new ArrayList<TramStatus>();
     }
 }

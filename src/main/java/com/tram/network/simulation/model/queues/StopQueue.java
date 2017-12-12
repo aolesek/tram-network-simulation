@@ -45,4 +45,11 @@ public class StopQueue implements Queue {
 
         return null;
     }
+
+    public List<Cell> getStoppedTrams() {
+        List<Cell> stoppedTrams = new ArrayList<>();
+        stoppedTrams.addAll(trams);
+
+        return stoppedTrams;
+    }
 }
