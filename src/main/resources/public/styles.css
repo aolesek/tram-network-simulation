@@ -30,3 +30,7 @@
 .leaflet-container {
   cursor: default !important;
 }
+
+.my-div-span {
+  font-size: 10px;
+}
