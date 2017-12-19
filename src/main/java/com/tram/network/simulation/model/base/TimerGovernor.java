@@ -19,7 +19,7 @@ public class TimerGovernor implements Runnable {
         while (true) {
             timer.nextState();
             try {
-                Thread.sleep(timer.getOneStepTime() * 10);
+                Thread.sleep(timer.getOneStepTime() * 100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -34,4 +34,5 @@ body { padding-top: 70px; }
 
 .my-div-span {
   font-size: 10px;
+  font-weight: bold;
 }
