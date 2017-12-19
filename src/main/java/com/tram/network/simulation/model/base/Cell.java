@@ -7,8 +7,7 @@ public class Cell {
     private Line line;
 
 
-    public Cell(TramState s, int c, Line l)
-    {
+    public Cell(TramState s, int c, Line l) {
         this.state = s;
         this.coords = c;
         this.line = l;
@@ -18,11 +17,7 @@ public class Cell {
         return state;
     }
 
-    public void setState(TramState state) {
-        this.state = state;
-    }
-
-    public Integer getCoords() {
+    Integer getCoords() {
         return coords;
     }
 

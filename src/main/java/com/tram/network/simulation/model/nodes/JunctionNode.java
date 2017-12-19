@@ -25,7 +25,7 @@ public class JunctionNode implements Node {
     public JunctionNode() {
     }
 
-    public JunctionNode(Coords2D coordinates, String name) {
+    public JunctionNode(String name, Coords2D coordinates) {
         this.coordinates = coordinates;
         this.name = name;
     }

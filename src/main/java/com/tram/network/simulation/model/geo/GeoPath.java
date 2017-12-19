@@ -88,6 +88,11 @@ public class GeoPath {
 
     }
 
+    public int getIntegerLength() {
+        Double d = length;
+        return d.intValue();
+    }
+
     /**
      * Calculate distance between two points in latitude and longitude taking
      * into account height difference. If you are not interested in height

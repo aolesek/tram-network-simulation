@@ -1,8 +1,8 @@
 package com.tram.network.simulation.model.base;
 
-public class TimerGovernor implements Runnable{
+public class TimerGovernor implements Runnable {
 
-    private GlobalTimer timer;
+    final private GlobalTimer timer;
 
     public TimerGovernor(GlobalTimer timer) {
         this.timer = timer;
@@ -16,10 +16,10 @@ public class TimerGovernor implements Runnable{
             e.printStackTrace();
         }
 
-        while(true) {
+        while (true) {
             timer.nextState();
             try {
-                Thread.sleep(timer.getOneStepTime()*10);
+                Thread.sleep(timer.getOneStepTime() * 10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

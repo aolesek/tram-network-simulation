@@ -63,4 +63,8 @@ public class StopNode implements Node {
     public void addTramToQueue(Cell cell) {
         queue.addTram(cell);
     }
+
+    public String toString() {
+        return name;
+    }
 }

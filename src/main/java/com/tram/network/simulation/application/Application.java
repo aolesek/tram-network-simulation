@@ -2,6 +2,8 @@ package com.tram.network.simulation.application;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tram.network.simulation.data.CityMap;
+import com.tram.network.simulation.data.CityMapBuilder;
 import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.geo.Coords2D;
 import com.tram.network.simulation.model.geo.GeoPath;
@@ -13,6 +15,7 @@ import com.tram.network.simulation.model.timetables.Timetable;
 import com.tram.network.simulation.model.timetables.TimetableFactory;
 import spark.ResponseTransformer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +46,7 @@ public class Application {
 
         // Junction 1
 
-        Node j1 = new JunctionNode(new Coords2D("50.0640263491082, 19.916539341205638"), "J1");
+        Node j1 = new JunctionNode("J1", new Coords2D("50.0640263491082, 19.916539341205638"));
         stops.add(j1);
 
         // Stop 1
@@ -84,7 +87,7 @@ public class Application {
 
         // Junction 2
 
-        Node j2 = new JunctionNode(new Coords2D("50.06087191954098, 19.91774097084431"), "J2");
+        Node j2 = new JunctionNode("J2", new Coords2D("50.06087191954098, 19.91774097084431"));
         stops.add(j2);
 
         // Loop 2
@@ -225,54 +228,54 @@ public class Application {
                 new Cell(TramState.TRAM, 0, new Line(1, LineDirection.NE))
         );
 
-//        l1.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
-//        );
-//        l1.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
-//        );
-//
-//        l1.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(2, LineDirection.NE))
-//        );
-//        l1.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(2, LineDirection.NE))
-//        );
-//        l1.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(2, LineDirection.NE))
-//        );
-//
-//        l2.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
-//        );
-//        l2.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
-//        );
-//        l2.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
-//        );
-//
-//        l2.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(2, LineDirection.SW))
-//        );
-//        l2.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(2, LineDirection.SW))
-//        );
-//        l2.addTramToQueue(
-//                new Cell(TramState.TRAM,0,new Line(2, LineDirection.SW))
-//        );
+        l1.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
+        );
+        l1.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
+        );
 
+        l1.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(2, LineDirection.NE))
+        );
+        l1.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(2, LineDirection.NE))
+        );
+        l1.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(2, LineDirection.NE))
+        );
 
-        //ONE PATH EXAMPLE
+        l2.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
+        );
+        l2.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
+        );
+        l2.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
+        );
 
-//        Map<Line,Timetable> timetables = new HashMap<>();
+        l2.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(2, LineDirection.SW))
+        );
+        l2.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(2, LineDirection.SW))
+        );
+        l2.addTramToQueue(
+                new Cell(TramState.TRAM,0,new Line(2, LineDirection.SW))
+        );
+
+//
+//        ONE PATH EXAMPLE
+//
+//        CityMap<Line,Timetable> timetables = new HashMap<>();
 //        timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable()); //l1t1
 //        timetables.put(new Line(2, LineDirection.NE), new SimpleTimetable() ); //l1t2
 //
 //        Node l1 = new LoopNode("L1",timetables);
 //
 //
-//        Map<Line,Timetable> timetables2 = new HashMap<>();
+//        CityMap<Line,Timetable> timetables2 = new HashMap<>();
 //        timetables2.put(new Line(1, LineDirection.SW), new SimpleTimetable()); //l1t1
 //        timetables2.put(new Line(2, LineDirection.SW), new SimpleTimetable() ); //l1t2
 //
@@ -298,10 +301,35 @@ public class Application {
 //        l1.addTramToQueue(
 //                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
 //        );
-
+//
         timer.setPathNetwork(paths);
         timer.setNodeNetwork(stops);
 
+
+        paths.set(0,paths.get(0).nextState());
+        System.out.println(paths.get(0));
+
+        System.out.println("dupa");
+
+//        CityMap citymap = null;
+//
+//        try {
+//            CityMapBuilder builder = new CityMapBuilder();
+//            builder.readCSVMapFile("C:\\Users\\arek\\Desktop\\tramnet.csv");
+//            citymap = new CityMap(
+//                    builder
+//            );
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        timer.setCityMap(citymap);
+//
+//        Map<String,Node> nodesMap = citymap.getNodesMap();
+//
+//        nodesMap.get("Darwina").addTramToQueue(
+//                new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
+//        );
 
         Thread thread = new Thread(new TimerGovernor(timer));
         thread.start();
