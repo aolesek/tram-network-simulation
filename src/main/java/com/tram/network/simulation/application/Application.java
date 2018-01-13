@@ -368,7 +368,6 @@ public class Application {
         final ResponseTransformer json = gson::toJson;
 
         port(4567);
-
         get("/trams", (req, res) -> timer.getTrams(), json);
         get("/time", (req, res) -> timer.getCurrentTime(), json);
         get("/step", (req, res) -> timer.getOneStepTime(), json);
