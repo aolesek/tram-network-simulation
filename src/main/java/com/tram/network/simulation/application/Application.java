@@ -300,7 +300,7 @@ public class Application {
 
         try {
             CityMapBuilder builder = new CityMapBuilder();
-            builder.readCSVMapFile("C:\\Users\\arek\\Desktop\\tramnet.csv");
+            builder.readCSVMapFile("/tramnet.csv");
             citymap = new CityMap(
                     builder
             );
@@ -360,7 +360,9 @@ public class Application {
         Thread thread = new Thread(new TimerGovernor(timer));
         thread.start();
 
-        externalStaticFileLocation("C:\\Users\\arek\\Desktop\\symulacje\\tram-network-simulation\\src\\main\\resources\\public");
+        //externalStaticFileLocation("/public");
+        externalStaticFileLocation("src/main/resources/public/");
+        //staticFileLocation("/public");
 
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final ResponseTransformer json = gson::toJson;

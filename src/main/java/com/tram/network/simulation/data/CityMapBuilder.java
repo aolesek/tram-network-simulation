@@ -1,5 +1,6 @@
 package com.tram.network.simulation.data;
 
+
 import com.tram.network.simulation.model.base.Line;
 import com.tram.network.simulation.model.base.LineDirection;
 import com.tram.network.simulation.model.base.Path;
@@ -14,9 +15,8 @@ import com.tram.network.simulation.model.timetables.Timetable;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +42,18 @@ public class CityMapBuilder {
 
     public void readCSVMapFile(String filename) throws IOException {
 
-        Reader in = new FileReader(filename);
+        InputStream resourceStream  =
+                getClass().getResourceAsStream(filename);
+
+        Reader in = new InputStreamReader(resourceStream, "UTF-8");
+
+//        Reader in = new CharSequenceReader(new String(buffer));
+
+//        targetReader.close();
+//
+//        Reader in = new InputStreamReader(inputStream);
+
+        //Reader in = new FileReader(filename);
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withDelimiter(',').withAllowMissingColumnNames().withQuote('"').withNullString("").parse(in);
 
         for (CSVRecord record : records) {
@@ -55,8 +66,13 @@ public class CityMapBuilder {
             }
         }
         in.close();
+        resourceStream.close();
 
-        in = new FileReader(filename);
+        resourceStream  =
+                getClass().getResourceAsStream(filename);
+
+        in = new InputStreamReader(resourceStream, "UTF-8");
+
         records = CSVFormat.DEFAULT.withDelimiter(',').withAllowMissingColumnNames().withQuote('"').withNullString("").parse(in);
 
         for (CSVRecord record2 : records) {
