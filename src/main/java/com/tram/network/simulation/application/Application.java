@@ -6,9 +6,11 @@ import com.tram.network.simulation.data.CityMap;
 import com.tram.network.simulation.data.CityMapBuilder;
 import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.nodes.Node;
+import com.tram.network.simulation.model.timetables.TimetableFactory;
 import spark.ResponseTransformer;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.Map;
 
 import static spark.Spark.*;
@@ -299,7 +301,8 @@ public class Application {
         CityMap citymap = null;
 
         try {
-            CityMapBuilder builder = new CityMapBuilder();
+            TimetableFactory timetableFactory = new TimetableFactory(timer);
+            CityMapBuilder builder = new CityMapBuilder(timetableFactory);
             builder.readCSVMapFile("/tramnet.csv");
             citymap = new CityMap(
                     builder
@@ -311,7 +314,7 @@ public class Application {
         timer.setCityMap(citymap);
 
         Map<String,Node> nodesMap = citymap.getNodesMap();
-
+/*
         nodesMap.get("Darwina").addTramToQueue(
                 new Cell(TramState.TRAM,0,new Line(1, LineDirection.SW))
         );
@@ -350,8 +353,8 @@ public class Application {
         nodesMap.get("Teatr Ludowy").addTramToQueue(
                 new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
         );
-
-        nodesMap.get("Jarzębiny").addTramToQueue(
+*/
+        nodesMap.get("Wzgórza Krzesławickie").addTramToQueue(
                 new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
         );
 

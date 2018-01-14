@@ -10,8 +10,10 @@ import com.tram.network.simulation.model.nodes.JunctionNode;
 import com.tram.network.simulation.model.nodes.LoopNode;
 import com.tram.network.simulation.model.nodes.Node;
 import com.tram.network.simulation.model.nodes.StopNode;
+import com.tram.network.simulation.model.timetables.FileConverter;
 import com.tram.network.simulation.model.timetables.SimpleTimetable;
 import com.tram.network.simulation.model.timetables.Timetable;
+import com.tram.network.simulation.model.timetables.TimetableFactory;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
@@ -40,6 +42,12 @@ public class CityMapBuilder {
 
     private Map<String,Node> nodesMap = new HashMap<>();
 
+    private TimetableFactory timetableFactory;
+
+    public CityMapBuilder(TimetableFactory timetableFactory){
+        this.timetableFactory=timetableFactory;
+    }
+
     public void readCSVMapFile(String filename) throws IOException {
 
         InputStream resourceStream  =
@@ -62,7 +70,8 @@ public class CityMapBuilder {
                 addNode(
                         type,
                         record.get(1),
-                        record.get(2));
+                        record.get(2),
+                        record.get(3));
             }
         }
         in.close();
@@ -127,12 +136,13 @@ public class CityMapBuilder {
         return lines;
     }
 
-    public void addNode(String type, String name, String coordinates) {
+    public void addNode(String type, String name, String coordinates, String lines) {
+
         if (type.equals("stop")) {
             Node node = new StopNode(
                                     new Coords2D(coordinates),
                                     name,
-                                    buildTimetable()
+                                    buildTimetable(name, lines)
                         );
 
             nodesMap.put(name, node);
@@ -142,7 +152,7 @@ public class CityMapBuilder {
             Node node =  new LoopNode(
                                     new Coords2D(coordinates),
                                     name,
-                                    buildTimetable()
+                                    buildTimetable(name, lines)
                         );
             nodesMap.put(name,node);
             nodes.add(node);
@@ -157,11 +167,19 @@ public class CityMapBuilder {
         }
     }
 
-    public Map<Line,Timetable> buildTimetable() {
-        Map<Line,Timetable> timetables = new HashMap<>();
-        timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable());
-        timetables.put(new Line(1, LineDirection.SW), new SimpleTimetable());
+    public Map<Line,Timetable> buildTimetable(String lineName, String rawLines) {
 
+        Map<Line, Timetable> timetables = new HashMap<>();
+        FileConverter fileConverter = new FileConverter();
+
+        String [] lines = rawLines.split(",");
+        for (String line : lines) {
+            String stringTimetableNE = fileConverter.fileToString(line +"_"+ "NE"+"_"+lineName+".txt" );
+            String stringTimetableSW = fileConverter.fileToString(line +"_"+ "SW"+"_"+lineName+".txt" );
+
+            timetables.put(new Line(1, LineDirection.NE), timetableFactory.construct(stringTimetableNE));
+            timetables.put(new Line(1, LineDirection.SW), timetableFactory.construct(stringTimetableSW));
+        }
         return timetables;
     }
 }
