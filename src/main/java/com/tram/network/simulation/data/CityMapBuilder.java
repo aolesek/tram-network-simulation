@@ -83,17 +83,19 @@ public class CityMapBuilder {
                         record2.get(2),
                         record2.get(3),
                         record2.get(4),
-                        record2.get(5)
+                        record2.get(5),
+                        record2.get(6)
                 );
             }
         }
     }
 
-    public void addPath(String source, String destination, String velocity, String lines, String geoPath) {
+    public void addPath(String source, String destination, String defaultVelocity, String velocity, String lines, String geoPath) {
         paths.add(
                 new Path(
                         nodesMap.get(source),
                         nodesMap.get(destination),
+                        Integer.parseInt(defaultVelocity),
                         Integer.parseInt(velocity),
                         buildLines(lines,LineDirection.NE),
                         new GeoPath(geoPath)
@@ -103,6 +105,7 @@ public class CityMapBuilder {
                 new Path(
                         nodesMap.get(destination),
                         nodesMap.get(source),
+                        Integer.parseInt(defaultVelocity),
                         Integer.parseInt(velocity),
                         buildLines(lines,LineDirection.SW),
                         new GeoPath(geoPath).reverse()

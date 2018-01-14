@@ -55,7 +55,7 @@ public class GlobalTimer implements Timer {
     public void nextState() {
         System.out.println(getCurrentTime());
         for (int i = 0; i < pathNetwork.size(); i++) {
-            pathNetwork.set(i, pathNetwork.get(i).nextState());
+            pathNetwork.set(i, pathNetwork.get(i).nextState(getCurrentTime().toString()));
         }
         currentTime = currentTime.addMinutes(oneStepTime);
     }
