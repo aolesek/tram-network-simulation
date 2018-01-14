@@ -14,9 +14,8 @@ public class TimetableFactory {
     }
 
     public Timetable construct(String departures) {
-        String [] lines = departures.split("\n");
+        String [] lines = departures.split("\\r?\\n");
         List<DepartureTime> timetable = new ArrayList<>();
-
 
         for (String line : lines) {
             String [] tokens = line.split(" ");

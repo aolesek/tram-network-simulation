@@ -174,8 +174,8 @@ public class CityMapBuilder {
 
         String [] lines = rawLines.split(",");
         for (String line : lines) {
-            String stringTimetableNE = fileConverter.fileToString(line +"_"+ "NE"+"_"+lineName+".txt" );
-            String stringTimetableSW = fileConverter.fileToString(line +"_"+ "SW"+"_"+lineName+".txt" );
+            String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"_"+lineName.replace(" ","_").toLowerCase() );
+            String stringTimetableSW = fileConverter.fileToString(line +"_"+ "sw"+"_"+lineName.replace(" ","_").toLowerCase() );
 
             timetables.put(new Line(1, LineDirection.NE), timetableFactory.construct(stringTimetableNE));
             timetables.put(new Line(1, LineDirection.SW), timetableFactory.construct(stringTimetableSW));

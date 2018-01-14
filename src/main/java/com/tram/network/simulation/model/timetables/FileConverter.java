@@ -19,10 +19,10 @@ public class FileConverter {
     public String fileToString(String name){
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("./src/main/resources/timetables"+name+".txt"));
+            br = new BufferedReader(new FileReader("./src/main/resources/timetables/"+name+".txt"));
             String line;
             while ((line = br.readLine()) != null) {
-                timetable +=line;
+                timetable +=line+"\n";
             }
         } catch (IOException e) {
             e.printStackTrace();
