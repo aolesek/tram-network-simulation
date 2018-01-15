@@ -12,7 +12,7 @@ public class GlobalTimer implements Timer {
     private List<Path> pathNetwork;
     private List<Node> nodeNetwork;
     private DepartureTime currentTime = new DepartureTime(0, 0);
-    private Integer oneStepTime = 1;
+    private int oneStepTime = 10;
 
     public List<TramStatus> getTrams() {
         List<TramStatus> trams = new ArrayList<>();
@@ -57,7 +57,7 @@ public class GlobalTimer implements Timer {
         for (int i = 0; i < pathNetwork.size(); i++) {
             pathNetwork.set(i, pathNetwork.get(i).nextState());
         }
-        currentTime = currentTime.addMinutes(oneStepTime);
+        currentTime = currentTime.addSeconds(oneStepTime);
     }
 
     public int getOneStepTime() {
@@ -74,4 +74,7 @@ public class GlobalTimer implements Timer {
     }
 
 
+    public void setCurrentTime(DepartureTime currentTime) {
+        this.currentTime = currentTime;
+    }
 }

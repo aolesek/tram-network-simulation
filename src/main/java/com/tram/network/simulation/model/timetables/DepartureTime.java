@@ -3,42 +3,107 @@ package com.tram.network.simulation.model.timetables;
 public class DepartureTime implements Comparable<DepartureTime>{
 
     //TODO: REFACTOR NAME!
-    private int time = 0;
+    private int hour = 0;
+    private int minute = 0;
+    private int second = 0;
 
     public DepartureTime(int hour, int minute) {
         if ( (hour > 23) | (hour < 0) | (minute < 0) | (minute > 59)) {
-            this.time = 0;
+            this.minute = 0;
+            this.hour = 0;
         } else {
-            this.time = 1000*hour + minute;
+            this.hour = hour;
+            this.minute = minute;
+        }
+        this.second = 0;
+    }
+
+    public DepartureTime(int hour, int minute, int second) {
+        if ( (hour > 23) | (hour < 0) | (minute < 0) | (minute > 59) | (second < 0) | (second > 59) ) {
+            this.minute = 0;
+            this.hour = 0;
+            this.second = 0;
+        } else {
+            this.hour = hour;
+            this.minute = minute;
+            this.second = second;
         }
     }
 
     public DepartureTime addMinutes (int minutes) {
-        Integer hour = time/1000;
-        Integer min = time - (hour*1000);
+        int newminute = minute + minutes;
 
-        min += minutes;
+        int min;
+        int hou = hour;
+        int sec = second;
 
-        if (min > 59) {
-            hour++;
-            min -= 60;
+        if (newminute < 60) {
+            min = newminute;
+        } else {
+            int hours = newminute / 60;
+            min = newminute % 60;
+
+            int newhour = hour + hours;
+            if (newhour < 24) {
+                hou = newhour;
+            } else {
+                hou = newhour % 24;
+            }
+
         }
 
-        if (hour > 24) {
-            hour = 0;
+        return new DepartureTime(hou, min, sec);
+    }
+
+    public DepartureTime addSeconds (int secondsToAdd) {
+        int sec = second;
+        int min = minute;
+        int hou = hour;
+
+        int newsecond = second + secondsToAdd;
+
+
+
+
+        if (newsecond < 60) {
+            sec = newsecond;
+        } else {
+            int minutesOver = newsecond / 60;
+            sec = newsecond % 60;
+
+            int newminute = minute + minutesOver;
+            if (newminute < 60) {
+                min = newminute;
+            } else {
+                int hoursOver = newminute / 60;
+                min = newminute % 60;
+
+                int newhour = hour + hoursOver;
+                if (newhour < 24) {
+                    hou = newhour;
+                } else {
+                    hou = hou % 24;
+                }
+
+            }
+
+            return new DepartureTime(hou,min,sec);
         }
 
-        return new DepartureTime(hour, min);
+        return new DepartureTime(hou, min, sec);
     }
 
     private int getRawTime() {
-        return this.time;
+        return 1000000*hour + 1000*minute + second;
     }
 
     public int compareTo(DepartureTime t) {
-        if ( this.getRawTime() < t.getRawTime() ) {
+        int thisraw = 1000000*hour  + 1000*minute   + second;
+        int theiraw = 1000009*t.hour+ 1000*t.minute + t.second;
+
+        if (thisraw < theiraw) {
             return -1;
-        } else if ( this.getRawTime() == t.getRawTime() ) {
+        } else if (thisraw == theiraw) {
             return 0;
         } else {
             return 1;
@@ -63,8 +128,7 @@ public class DepartureTime implements Comparable<DepartureTime>{
 
     @Override
     public String toString() {
-        Integer hour = time/1000;
-        Integer min = time - (hour*1000);
-        return hour.toString() + ":" + min.toString() + " ";
+
+        return hour + ":" + minute + ":" + second + " ";
     }
 }

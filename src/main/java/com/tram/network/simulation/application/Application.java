@@ -6,6 +6,7 @@ import com.tram.network.simulation.data.CityMap;
 import com.tram.network.simulation.data.CityMapBuilder;
 import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.nodes.Node;
+import com.tram.network.simulation.model.timetables.DepartureTime;
 import com.tram.network.simulation.model.timetables.TimetableFactory;
 import spark.ResponseTransformer;
 
@@ -20,6 +21,7 @@ public class Application {
 
 
         GlobalTimer timer = new GlobalTimer();
+        timer.setCurrentTime(new DepartureTime(4,20,0));
 
         CityMap citymap = null;
 
