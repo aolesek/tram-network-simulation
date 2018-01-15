@@ -57,8 +57,11 @@
       <div id="infoparent">
         <p id="time"></p>
         <p id="info"></p>
-        <p id="tracking"></p>
-        <button onclick="document.getElementById('tracking').innerHTML = ''">clear lol</button>
+        <textarea id="tracking"></textarea>
+        <button onclick="copyclear()">copy&clear</button>
+        <button id="hidebutton" onclick="hideTrams()">hide trams</button>
+        <button onclick="document.getElementById('tracking').innerHTML = ''">clear</button>
+        <p id="copyinfo"></p>
       </div>
     </div>
   </div>
@@ -70,6 +73,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script>
+
+      function copyclear() {
+
+
+          try {
+              var coordinates = document.getElementById('tracking');
+              coordinates.select();
+              var successful = document.execCommand('copy');
+              var msg = successful ? 'successful' : 'unsuccessful';
+              console.log('Copying text command was ' + msg);
+              document.getElementById('tracking').innerHTML = "";
+              document.getElementById('copyinfo').innerHTML = "Skopiowano!";
+              setTimeout(function() {document.getElementById('copyinfo').innerHTML = "";}, 3000);
+          } catch (err) {
+              alert('Oops, unable to copy');
+          }
+
+      }
+
+      function hideTrams() {
+          document.getElementById('info').setAttribute("style", "display: none");
+          document.getElementById('hidebutton').setAttribute("onclick", "showTrams()");
+          document.getElementById('hidebutton').innerHTML = "show trams";
+      }
+
+      function showTrams() {
+          document.getElementById('info').setAttribute("style", "display: block");
+          document.getElementById('hidebutton').setAttribute("onclick", "hideTrams()");
+          document.getElementById('hidebutton').innerHTML = "hide trams";
+      }
 
       var mymap = L.map('mapid').setView([50.0663, 19.922], 13);
 
@@ -149,5 +182,4 @@
 
 
     </script>
-  </body>
-</html>
+  </bo
