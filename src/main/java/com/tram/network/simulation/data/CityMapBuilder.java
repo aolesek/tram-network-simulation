@@ -171,25 +171,30 @@ public class CityMapBuilder {
 
         Map<Line, Timetable> timetables = new HashMap<>();
         FileConverter fileConverter = new FileConverter();
+        if ((rawLines != null) && (!rawLines.isEmpty())) {
+            String [] lines = rawLines.split(",");
+            for (String line : lines) {
+                String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"-"+lineName.replace(" ","_").toLowerCase() );
+                String stringTimetableSW = fileConverter.fileToString(line +"_"+ "sw"+"-"+lineName.replace(" ","_").toLowerCase() );
 
-        String [] lines = rawLines.split(",");
-        for (String line : lines) {
-            String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"_"+lineName.replace(" ","_").toLowerCase() );
-            String stringTimetableSW = fileConverter.fileToString(line +"_"+ "sw"+"_"+lineName.replace(" ","_").toLowerCase() );
+                if (stringTimetableNE.isEmpty()) {
+                    timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable());
+                } else {
+                    timetables.put(new Line(1, LineDirection.NE), timetableFactory.construct(stringTimetableNE));
+                }
 
-            if (stringTimetableNE.isEmpty()) {
-                timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable());
-            } else {
-                timetables.put(new Line(1, LineDirection.NE), timetableFactory.construct(stringTimetableNE));
+                if (stringTimetableSW.isEmpty()) {
+                    timetables.put(new Line(1, LineDirection.SW), new SimpleTimetable());
+
+                } else {
+                    timetables.put(new Line(1, LineDirection.SW), timetableFactory.construct(stringTimetableSW));
+                }
             }
-
-            if (stringTimetableSW.isEmpty()) {
-                timetables.put(new Line(1, LineDirection.SW), new SimpleTimetable());
-
-            } else {
-                timetables.put(new Line(1, LineDirection.SW), timetableFactory.construct(stringTimetableSW));
-            }
+            return timetables;
+        } else {
+            System.out.println("Jedna z liniijek  w pliku mapy określająca jakie linie jeżdżą po danym przystanku jest pusta!");
+            return null;
         }
-        return timetables;
+
     }
 }

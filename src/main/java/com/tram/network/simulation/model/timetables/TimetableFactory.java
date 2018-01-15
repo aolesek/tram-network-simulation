@@ -14,10 +14,11 @@ public class TimetableFactory {
     }
 
     public Timetable construct(String departures) {
-        String [] lines = departures.split("\\r?\\n");
+        String [] lines = departures.split(" ?\\r?\\n ?");
         List<DepartureTime> timetable = new ArrayList<>();
 
         for (String line : lines) {
+            line.replaceAll("  ", " ");
             String [] tokens = line.split(" ");
 
             if (tokens.length > 1) {

@@ -10,7 +10,7 @@ import java.util.List;
 public class CityMapTests {
     @Test
     public void cityMapTest() {
-        CityMapBuilder builder = new CityMapBuilder();
+        CityMapBuilder builder = new CityMapBuilder(null);
 
         try {
             builder.readCSVMapFile("C:\\Users\\arek\\Desktop\\tramnet.csv");
