@@ -77,16 +77,16 @@ public class Path {
         cells.put(coords, cell);
     }
 
-    public Path nextState(String currentTime) {
+    public Path nextState(Boolean randomEvent, String currentTime) {
         String[] parts = currentTime.split(":");
         int v = velocity;
         int hour = Integer.parseInt(parts[0]);
         if((hour>=0 && hour<7) || (hour>17 && hour<24) || (hour>9 && hour<15)){
             v = defaultVelocity;
         }
-
-
-        //TODO: implement velocity modifications based on time, traffic and random evenets
+        if(randomEvent){
+            v = 0;
+        }
 
         Path newPath = newInstance();
 

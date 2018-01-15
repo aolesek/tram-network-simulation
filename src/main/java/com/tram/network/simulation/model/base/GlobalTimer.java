@@ -4,15 +4,17 @@ import com.tram.network.simulation.data.CityMap;
 import com.tram.network.simulation.model.nodes.Node;
 import com.tram.network.simulation.model.timetables.DepartureTime;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GlobalTimer implements Timer {
     private List<Path> pathNetwork;
     private List<Node> nodeNetwork;
     private DepartureTime currentTime = new DepartureTime(0, 0);
     private Integer oneStepTime = 10;
+    private Boolean[] randomEventOnTram;
+    private int[] durationOfWaiting;
+    private static final int chance = 500;
+    Random generator = new Random();
 
     public List<TramStatus> getTrams() {
         List<TramStatus> trams = new ArrayList<>();
@@ -50,12 +52,14 @@ public class GlobalTimer implements Timer {
     public void setCityMap(CityMap map) {
         this.pathNetwork = map.getPaths();
         this.nodeNetwork = map.getNodes();
+        initializeRandomEvents();
     }
 
     public void nextState() {
+        randomEvent();
         System.out.println(getCurrentTime());
         for (int i = 0; i < pathNetwork.size(); i++) {
-            pathNetwork.set(i, pathNetwork.get(i).nextState(getCurrentTime().toString()));
+            pathNetwork.set(i, pathNetwork.get(i).nextState(randomEventOnTram[i] == true, getCurrentTime().toString()));
         }
         currentTime = currentTime.addMinutes(oneStepTime);
     }
@@ -73,5 +77,30 @@ public class GlobalTimer implements Timer {
         return currentTime;
     }
 
+    private void initializeRandomEvents(){
+        randomEventOnTram = new Boolean[pathNetwork.size()];
+        durationOfWaiting = new int[pathNetwork.size()];
+        for(int i = 0; i<pathNetwork.size(); i++){
+            randomEventOnTram[i]=false;
+            durationOfWaiting[i]=0;
+        }
+    }
 
+    private void randomEvent(){
+        for (int i = 0; i < pathNetwork.size(); i++){
+            if(randomEventOnTram[i] == false) {
+                if(generator.nextInt(chance) == 1){
+                    randomEventOnTram[i]=true;
+                    durationOfWaiting[i]=1+generator.nextInt(4);
+                }
+            }
+            else{
+                durationOfWaiting[i]--;
+                if(durationOfWaiting[i] == 0){
+                    randomEventOnTram[i]=false;
+                }
+            }
+            System.out.println("duration["+i+"]:"+durationOfWaiting[i]);
+        }
+    }
 }
