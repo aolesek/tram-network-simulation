@@ -354,7 +354,7 @@ public class Application {
                 new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
         );
 */
-        nodesMap.get("Wzgórza Krzesławickie").addTramToQueue(
+        nodesMap.get("Wzgorza Krzeslawickie").addTramToQueue(
                 new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
         );
 

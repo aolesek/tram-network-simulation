@@ -177,8 +177,18 @@ public class CityMapBuilder {
             String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"_"+lineName.replace(" ","_").toLowerCase() );
             String stringTimetableSW = fileConverter.fileToString(line +"_"+ "sw"+"_"+lineName.replace(" ","_").toLowerCase() );
 
-            timetables.put(new Line(1, LineDirection.NE), timetableFactory.construct(stringTimetableNE));
-            timetables.put(new Line(1, LineDirection.SW), timetableFactory.construct(stringTimetableSW));
+            if (stringTimetableNE.isEmpty()) {
+                timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable());
+            } else {
+                timetables.put(new Line(1, LineDirection.NE), timetableFactory.construct(stringTimetableNE));
+            }
+
+            if (stringTimetableSW.isEmpty()) {
+                timetables.put(new Line(1, LineDirection.SW), new SimpleTimetable());
+
+            } else {
+                timetables.put(new Line(1, LineDirection.SW), timetableFactory.construct(stringTimetableSW));
+            }
         }
         return timetables;
     }

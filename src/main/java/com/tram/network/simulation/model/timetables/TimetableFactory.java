@@ -22,6 +22,7 @@ public class TimetableFactory {
 
             if (tokens.length > 1) {
                 for (int i = 1; i < tokens.length; i++) {
+                    if (!(tokens[0].isEmpty() || tokens[i].isEmpty()))
                     timetable.add(new DepartureTime(
                             Integer.parseInt(tokens[0]),
                             Integer.parseInt(tokens[i])
