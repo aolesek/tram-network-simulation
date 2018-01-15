@@ -14,15 +14,16 @@ public class TimetableFactory {
     }
 
     public Timetable construct(String departures) {
-        String [] lines = departures.split("\n");
+        String [] lines = departures.split(" ?\\r?\\n ?");
         List<DepartureTime> timetable = new ArrayList<>();
 
-
         for (String line : lines) {
+            line.replaceAll("  ", " ");
             String [] tokens = line.split(" ");
 
             if (tokens.length > 1) {
                 for (int i = 1; i < tokens.length; i++) {
+                    if (!(tokens[0].isEmpty() || tokens[i].isEmpty()))
                     timetable.add(new DepartureTime(
                             Integer.parseInt(tokens[0]),
                             Integer.parseInt(tokens[i])
