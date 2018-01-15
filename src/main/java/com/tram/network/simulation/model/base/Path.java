@@ -19,12 +19,12 @@ public class Path {
     private GeoPath geoPath;
     private CellIterator cellIterator = new CellIterator();
 
-    public Path(Node source, Node destination, int defaultVelocity, int velocity, List<Line> lines, GeoPath geoPath) {
+    public Path(Node source, Node destination, int defaultVelocity, List<Line> lines, GeoPath geoPath) {
         this.id = source + " to " + destination;
         this.source = source;
         this.destination = destination;
         this.defaultVelocity = defaultVelocity;
-        this.velocity = velocity;
+        this.velocity = defaultVelocity;
         this.lines = lines;
         this.geoPath = geoPath;
         this.length = geoPath.getIntegerLength();
@@ -77,21 +77,14 @@ public class Path {
         cells.put(coords, cell);
     }
 
-    public Path nextState(Boolean randomEvent, String currentTime) {
-        String[] parts = currentTime.split(":");
-        int v = velocity;
-        int hour = Integer.parseInt(parts[0]);
-        if((hour>=0 && hour<7) || (hour>17 && hour<24) || (hour>9 && hour<15)){
-            v = defaultVelocity;
-        }
-        if(randomEvent){
-            v = 0;
-        }
+    public Path nextState() {
+
+        //TODO: implement velocity modifications based on time, traffic and random evenets
 
         Path newPath = newInstance();
 
         //TODO: might not be correct
-        if (v != 0) {
+        if (velocity != 0) {
             Cell newTram = source.getTramFromQueue(lines);
             if (newTram != null) newPath.setCellState(0, newTram);
         }
@@ -100,7 +93,7 @@ public class Path {
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator().next();
             if (cell.getState() == TramState.TRAM) {
-                int newCoords = cell.getCoords() + v;
+                int newCoords = cell.getCoords() + velocity;
                 if (newCoords < length) {
                     cell.setCoords(newCoords);
                     newPath.setCellState(newCoords, cell);

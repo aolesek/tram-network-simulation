@@ -1,17 +1,17 @@
 package com.tram.network.simulation.data;
 
 
-import com.tram.network.simulation.model.base.Line;
-import com.tram.network.simulation.model.base.LineDirection;
-import com.tram.network.simulation.model.base.Path;
+import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.geo.Coords2D;
 import com.tram.network.simulation.model.geo.GeoPath;
 import com.tram.network.simulation.model.nodes.JunctionNode;
 import com.tram.network.simulation.model.nodes.LoopNode;
 import com.tram.network.simulation.model.nodes.Node;
 import com.tram.network.simulation.model.nodes.StopNode;
+import com.tram.network.simulation.model.timetables.FileConverter;
 import com.tram.network.simulation.model.timetables.SimpleTimetable;
 import com.tram.network.simulation.model.timetables.Timetable;
+import com.tram.network.simulation.model.timetables.TimetableFactory;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
@@ -40,6 +40,12 @@ public class CityMapBuilder {
 
     private Map<String,Node> nodesMap = new HashMap<>();
 
+    private TimetableFactory timetableFactory;
+
+    public CityMapBuilder(TimetableFactory timetableFactory){
+        this.timetableFactory=timetableFactory;
+    }
+
     public void readCSVMapFile(String filename) throws IOException {
 
         InputStream resourceStream  =
@@ -62,7 +68,9 @@ public class CityMapBuilder {
                 addNode(
                         type,
                         record.get(1),
-                        record.get(2));
+                        record.get(2),
+                        record.get(3),
+                        record.get(4));
             }
         }
         in.close();
@@ -83,19 +91,17 @@ public class CityMapBuilder {
                         record2.get(2),
                         record2.get(3),
                         record2.get(4),
-                        record2.get(5),
-                        record2.get(6)
+                        record2.get(5)
                 );
             }
         }
     }
 
-    public void addPath(String source, String destination, String defaultVelocity, String velocity, String lines, String geoPath) {
+    public void addPath(String source, String destination, String velocity, String lines, String geoPath) {
         paths.add(
                 new Path(
                         nodesMap.get(source),
                         nodesMap.get(destination),
-                        Integer.parseInt(defaultVelocity),
                         Integer.parseInt(velocity),
                         buildLines(lines,LineDirection.NE),
                         new GeoPath(geoPath)
@@ -105,7 +111,6 @@ public class CityMapBuilder {
                 new Path(
                         nodesMap.get(destination),
                         nodesMap.get(source),
-                        Integer.parseInt(defaultVelocity),
                         Integer.parseInt(velocity),
                         buildLines(lines,LineDirection.SW),
                         new GeoPath(geoPath).reverse()
@@ -130,13 +135,16 @@ public class CityMapBuilder {
         return lines;
     }
 
-    public void addNode(String type, String name, String coordinates) {
+    public void addNode(String type, String name, String coordinates, String lines, String numberOfTrams) {
+
         if (type.equals("stop")) {
             Node node = new StopNode(
                                     new Coords2D(coordinates),
                                     name,
-                                    buildTimetable()
+                                    buildTimetable(name, lines)
                         );
+
+            addInitialTrams(node,numberOfTrams);
 
             nodesMap.put(name, node);
             nodes.add(node);
@@ -145,8 +153,9 @@ public class CityMapBuilder {
             Node node =  new LoopNode(
                                     new Coords2D(coordinates),
                                     name,
-                                    buildTimetable()
+                                    buildTimetable(name, lines)
                         );
+            addInitialTrams(node,numberOfTrams);
             nodesMap.put(name,node);
             nodes.add(node);
 
@@ -160,11 +169,70 @@ public class CityMapBuilder {
         }
     }
 
-    public Map<Line,Timetable> buildTimetable() {
-        Map<Line,Timetable> timetables = new HashMap<>();
-        timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable());
-        timetables.put(new Line(1, LineDirection.SW), new SimpleTimetable());
+    private void addInitialTrams(Node node, String numberOfTrams) {
+        if ((numberOfTrams == null) || (numberOfTrams.isEmpty()))
+            return;
 
-        return timetables;
+        String[] byLines = numberOfTrams.split(",");
+
+        for (String line: byLines) {
+            String[] tokens;
+            String directionString = "";
+
+            if (line.contains("NE")) {
+                tokens = line.split("NE");
+                directionString = "NE";
+
+            } else if (line.contains("SW")) {
+                tokens = line.split("SW");
+                directionString = "SW";
+            } else {
+                System.out.println("Błąd przy parsowaniu liczby tramwajów rozpoczynających na przystanku");
+                return;
+            }
+
+
+            int linenumber = Integer.parseInt(tokens[0]);
+            int quantity = Integer.parseInt(tokens[1]);
+            LineDirection direction = (directionString.equals("NE"))? LineDirection.NE : LineDirection.SW;
+
+            for (int i = 0; i < quantity; i++) {
+                Cell tram = new Cell(TramState.TRAM,0,new Line(linenumber,direction));
+                node.addTramToQueue(tram);
+            }
+        }
+    }
+
+    public Map<Line,Timetable> buildTimetable(String lineName, String rawLines) {
+
+        Map<Line, Timetable> timetables = new HashMap<>();
+        FileConverter fileConverter = new FileConverter();
+        if ((rawLines != null) && (!rawLines.isEmpty())) {
+            String [] lines = rawLines.split(",");
+            for (String line : lines) {
+
+
+                String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"-"+lineName.replace(" ","_").toLowerCase() );
+                String stringTimetableSW = fileConverter.fileToString(line +"_"+ "sw"+"-"+lineName.replace(" ","_").toLowerCase() );
+
+                if (stringTimetableNE.isEmpty()) {
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.NE), new SimpleTimetable());
+                } else {
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.NE), timetableFactory.construct(stringTimetableNE));
+                }
+
+                if (stringTimetableSW.isEmpty()) {
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.SW), new SimpleTimetable());
+
+                } else {
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.SW), timetableFactory.construct(stringTimetableSW));
+                }
+            }
+            return timetables;
+        } else {
+            System.out.println("Jedna z liniijek  w pliku mapy określająca jakie linie jeżdżą po danym przystanku jest pusta!");
+            return null;
+        }
+
     }
 }
