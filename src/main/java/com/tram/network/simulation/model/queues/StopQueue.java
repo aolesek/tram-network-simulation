@@ -34,12 +34,21 @@ public class StopQueue implements Queue {
 
         if ( tram != null) {
             Line line = tram.getLine();
-            Timetable lineTimetable = timetables.get(line);
-            if (lines.contains(line) && (lineTimetable != null) && lineTimetable.isItDepartureTime() ) {
-                trams.remove(0);
-                lineTimetable.tramDeparted();
-                return tram;
+            if (timetables.containsKey(line)) {
+                Timetable lineTimetable = timetables.get(line);
+                if (lines.contains(line) && (lineTimetable != null) && lineTimetable.isItDepartureTime() ) {
+                    trams.remove(0);
+                    lineTimetable.tramDeparted();
+                    return tram;
+                }
+            } else {
+               if (lines.contains(line)) {
+                   trams.remove(0);
+                   return tram;
+               }
+
             }
+
 
         }
 

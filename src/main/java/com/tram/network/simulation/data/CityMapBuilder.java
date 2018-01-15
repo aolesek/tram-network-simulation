@@ -174,20 +174,22 @@ public class CityMapBuilder {
         if ((rawLines != null) && (!rawLines.isEmpty())) {
             String [] lines = rawLines.split(",");
             for (String line : lines) {
+
+
                 String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"-"+lineName.replace(" ","_").toLowerCase() );
                 String stringTimetableSW = fileConverter.fileToString(line +"_"+ "sw"+"-"+lineName.replace(" ","_").toLowerCase() );
 
                 if (stringTimetableNE.isEmpty()) {
-                    timetables.put(new Line(1, LineDirection.NE), new SimpleTimetable());
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.NE), new SimpleTimetable());
                 } else {
-                    timetables.put(new Line(1, LineDirection.NE), timetableFactory.construct(stringTimetableNE));
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.NE), timetableFactory.construct(stringTimetableNE));
                 }
 
                 if (stringTimetableSW.isEmpty()) {
-                    timetables.put(new Line(1, LineDirection.SW), new SimpleTimetable());
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.SW), new SimpleTimetable());
 
                 } else {
-                    timetables.put(new Line(1, LineDirection.SW), timetableFactory.construct(stringTimetableSW));
+                    timetables.put(new Line(Integer.parseInt(line), LineDirection.SW), timetableFactory.construct(stringTimetableSW));
                 }
             }
             return timetables;

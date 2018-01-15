@@ -25,7 +25,9 @@ public class FileConverter {
                 timetable +=line+"\n";
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("INFO: Nie znaleziono pliku z rozkładem./src/main/resources/timetables/"+name+".txt");
+
+           // e.printStackTrace();
         } finally {
             try {
                 if (br != null) {
