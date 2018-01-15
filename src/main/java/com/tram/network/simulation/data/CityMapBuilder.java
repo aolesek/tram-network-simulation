@@ -92,29 +92,32 @@ public class CityMapBuilder {
                         record2.get(2),
                         record2.get(3),
                         record2.get(4),
-                        record2.get(5)
+                        record2.get(5),
+                        record2.get(6)
                 );
             }
         }
     }
 
-    public void addPath(String source, String destination, String velocity, String lines, String geoPath) {
+    public void addPath(String source, String destination, String defaultVelocity, String lines, String geoPath, String velocity) {
         paths.add(
                 new Path(
                         nodesMap.get(source),
                         nodesMap.get(destination),
-                        Integer.parseInt(velocity),
+                        Integer.parseInt(defaultVelocity),
                         buildLines(lines,LineDirection.NE),
-                        new GeoPath(geoPath)
+                        new GeoPath(geoPath),
+                        Integer.parseInt(velocity)
                 )
         );
         paths.add(
                 new Path(
                         nodesMap.get(destination),
                         nodesMap.get(source),
-                        Integer.parseInt(velocity),
+                        Integer.parseInt(defaultVelocity),
                         buildLines(lines,LineDirection.SW),
-                        new GeoPath(geoPath).reverse()
+                        new GeoPath(geoPath).reverse(),
+                        Integer.parseInt(velocity)
                 )
         );
     }

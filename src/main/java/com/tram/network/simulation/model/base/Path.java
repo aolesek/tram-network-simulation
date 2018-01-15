@@ -19,12 +19,12 @@ public class Path {
     private GeoPath geoPath;
     private CellIterator cellIterator = new CellIterator();
 
-    public Path(Node source, Node destination, int defaultVelocity, List<Line> lines, GeoPath geoPath) {
+    public Path(Node source, Node destination, int defaultVelocity, List<Line> lines, GeoPath geoPath, int velocity) {
         this.id = source + " to " + destination;
         this.source = source;
         this.destination = destination;
         this.defaultVelocity = defaultVelocity;
-        this.velocity = defaultVelocity;
+        this.velocity = velocity;
         this.lines = lines;
         this.geoPath = geoPath;
         this.length = geoPath.getIntegerLength();
@@ -77,9 +77,16 @@ public class Path {
         cells.put(coords, cell);
     }
 
-    public Path nextState() {
-
-        //TODO: implement velocity modifications based on time, traffic and random evenets
+    public Path nextState(Boolean randomEvent, String currentTime) {
+        String[] parts = currentTime.split(":");
+        int v = velocity;
+        int hour = Integer.parseInt(parts[0]);
+        if((hour>=0 && hour<7) || (hour>17 && hour<24) || (hour>9 && hour<15)){
+            v = defaultVelocity;
+        }
+        if(randomEvent){
+            v = 0;
+        }
 
         Path newPath = newInstance();
 
