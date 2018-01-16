@@ -18,12 +18,12 @@ public class TimerGovernor implements Runnable {
 
         while (true) {
             timer.nextState();
-            try {
-                Thread.sleep(timer.getOneStepTime() * 30);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1 );
+//
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 }

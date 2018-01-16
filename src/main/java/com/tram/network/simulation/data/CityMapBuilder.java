@@ -1,9 +1,7 @@
 package com.tram.network.simulation.data;
 
 
-import com.tram.network.simulation.model.base.Line;
-import com.tram.network.simulation.model.base.LineDirection;
-import com.tram.network.simulation.model.base.Path;
+import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.geo.Coords2D;
 import com.tram.network.simulation.model.geo.GeoPath;
 import com.tram.network.simulation.model.nodes.JunctionNode;
@@ -153,7 +151,7 @@ public class CityMapBuilder {
                                     name,
                                     buildTimetable(name, lines)
                         );
-
+            addInitialTrams(node,numberOfTrams);
             nodesMap.put(name, node);
             nodes.add(node);
 
@@ -163,6 +161,7 @@ public class CityMapBuilder {
                                     name,
                                     buildTimetable(name, lines)
                         );
+            addInitialTrams(node,numberOfTrams);
             nodesMap.put(name,node);
             nodes.add(node);
 
@@ -173,6 +172,40 @@ public class CityMapBuilder {
                         );
             nodesMap.put(name,node);
             nodes.add(node);
+        }
+    }
+
+    private void addInitialTrams(Node node, String numberOfTrams) {
+        if ((numberOfTrams == null) || (numberOfTrams.isEmpty()))
+            return;
+
+        String[] byLines = numberOfTrams.split(",");
+
+        for (String line: byLines) {
+            String[] tokens;
+            String directionString = "";
+
+            if (line.contains("NE")) {
+                tokens = line.split("NE");
+                directionString = "NE";
+
+            } else if (line.contains("SW")) {
+                tokens = line.split("SW");
+                directionString = "SW";
+            } else {
+                System.out.println("Błąd przy parsowaniu liczby tramwajów rozpoczynających na przystanku");
+                return;
+            }
+
+
+            int linenumber = Integer.parseInt(tokens[0]);
+            int quantity = Integer.parseInt(tokens[1]);
+            LineDirection direction = (directionString.equals("NE"))? LineDirection.NE : LineDirection.SW;
+
+            for (int i = 0; i < quantity; i++) {
+                Cell tram = new Cell(TramState.TRAM,0,new Line(linenumber,direction));
+                node.addTramToQueue(tram);
+            }
         }
     }
 

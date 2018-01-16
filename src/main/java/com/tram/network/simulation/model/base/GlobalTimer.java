@@ -12,8 +12,8 @@ import java.util.Random;
 public class GlobalTimer implements Timer {
     private List<Path> pathNetwork;
     private List<Node> nodeNetwork;
-    private DepartureTime currentTime = new DepartureTime(0, 0);
-    private Integer oneStepTime = 5;
+    private DepartureTime currentTime = new DepartureTime(0, 0, 0);
+    private Integer oneStepTime = 1;
     private Boolean[] randomEventOnTram;
     private int[] durationOfWaiting;
     private static final int chance = 50000;

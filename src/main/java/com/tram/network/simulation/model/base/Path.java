@@ -84,9 +84,9 @@ public class Path {
         if((hour>=0 && hour<7) || (hour>17 && hour<24) || (hour>9 && hour<15)){
             v = defaultVelocity;
         }
-        if(randomEvent){
-            v = 0;
-        }
+//        if(randomEvent){
+//            v = 0;
+//        }
 
         Path newPath = newInstance();
 
