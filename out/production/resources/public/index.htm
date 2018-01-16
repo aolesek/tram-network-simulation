@@ -104,6 +104,8 @@
           document.getElementById('hidebutton').innerHTML = "hide trams";
       }
 
+      hideTrams();
+
       var mymap = L.map('mapid').setView([50.0663, 19.922], 13);
 
       L.tileLayer( 'https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=26e3b7adab224e29934c30d69f353388', {

@@ -16,14 +16,25 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 
-
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CityMapBuilder {
+    private List<Node> nodes = new ArrayList<>();
+    private List<Path> paths = new ArrayList<>();
+    private Map<String, Node> nodesMap = new HashMap<>();
+    private TimetableFactory timetableFactory;
+
+    public CityMapBuilder(TimetableFactory timetableFactory) {
+        this.timetableFactory = timetableFactory;
+    }
+
     public List<Node> getNodes() {
         return nodes;
     }
@@ -32,24 +43,13 @@ public class CityMapBuilder {
         return paths;
     }
 
-    private List<Node> nodes = new ArrayList<>();
-    private List<Path> paths = new ArrayList<>();
-
     public Map<String, Node> getNodesMap() {
         return nodesMap;
     }
 
-    private Map<String,Node> nodesMap = new HashMap<>();
-
-    private TimetableFactory timetableFactory;
-
-    public CityMapBuilder(TimetableFactory timetableFactory){
-        this.timetableFactory=timetableFactory;
-    }
-
     public void readCSVMapFile(String filename) throws IOException {
 
-        InputStream resourceStream  =
+        InputStream resourceStream =
                 getClass().getResourceAsStream(filename);
 
         Reader in = new InputStreamReader(resourceStream, "UTF-8");
@@ -61,7 +61,7 @@ public class CityMapBuilder {
 //        Reader in = new InputStreamReader(inputStream);
 
         //Reader in = new FileReader(filename);
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withDelimiter(',').withAllowMissingColumnNames().withQuote('"').withNullString("").parse(in);
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withDelimiter(';').withAllowMissingColumnNames().withQuote('"').withNullString("").parse(in);
 
         for (CSVRecord record : records) {
             String type = record.get(0);
@@ -77,12 +77,12 @@ public class CityMapBuilder {
         in.close();
         resourceStream.close();
 
-        resourceStream  =
+        resourceStream =
                 getClass().getResourceAsStream(filename);
 
         in = new InputStreamReader(resourceStream, "UTF-8");
 
-        records = CSVFormat.DEFAULT.withDelimiter(',').withAllowMissingColumnNames().withQuote('"').withNullString("").parse(in);
+        records = CSVFormat.DEFAULT.withDelimiter(';').withAllowMissingColumnNames().withQuote('"').withNullString("").parse(in);
 
         for (CSVRecord record2 : records) {
             String type = record2.get(0);
@@ -99,26 +99,43 @@ public class CityMapBuilder {
         }
     }
 
-    public void addPath(String source, String destination, String defaultVelocity, String lines, String geoPath, String velocity) {
+    public void addPath(String source, String destination, String defaultVelocityStr, String lines, String geoPath, String velocityStr) {
 
+        int defaultVelocity = Integer.parseInt(defaultVelocityStr);
+        int velocity = Integer.parseInt(velocityStr);
+
+        defaultVelocity *= 0.278; //to m/s
+        velocity *= 0.278; // to m/s
+
+        if ((defaultVelocity <= 3) || (velocity <= 3))
+            System.out.println(source + " to " + destination + " prędkośc za niska!");
+
+
+        defaultVelocity *= timetableFactory.getOneStepTime(); // m/s * one step time in seconds => meters by iteration
+        velocity *= timetableFactory.getOneStepTime();
+
+        Node sourceNode = nodesMap.get(StringUtils.stripAccents(source).toLowerCase());
+        Node destinationNode = nodesMap.get(StringUtils.stripAccents(destination).toLowerCase());
+
+        if ((sourceNode == null) || (destinationNode == null))
+            System.out.println("Pusty węzeł w ścieżce " + source + " to " + destination);
 
         paths.add(
-                new Path(
-                        nodesMap.get(StringUtils.stripAccents(source)),
-                        nodesMap.get(StringUtils.stripAccents(destination)),
-                        Integer.parseInt(defaultVelocity),
-                        buildLines(lines,LineDirection.NE),
+                new Path(sourceNode,
+                        destinationNode,
+                        defaultVelocity,
+                        buildLines(lines, LineDirection.NE),
                         new GeoPath(geoPath),
-                        Integer.parseInt(velocity)
+                        velocity
                 )
         );
         paths.add(
-                new Path(nodesMap.get(StringUtils.stripAccents(destination)),
-                        nodesMap.get(StringUtils.stripAccents(source)),
-                        Integer.parseInt(defaultVelocity),
-                        buildLines(lines,LineDirection.SW),
+                new Path(destinationNode,
+                        sourceNode,
+                        defaultVelocity,
+                        buildLines(lines, LineDirection.SW),
                         new GeoPath(geoPath).reverse(),
-                        Integer.parseInt(velocity)
+                        velocity
                 )
         );
     }
@@ -127,12 +144,12 @@ public class CityMapBuilder {
         List<Line> lines = new ArrayList<>();
 
         if (linesString.contains(",")) {
-            String [] singleLine = linesString.split(",");
+            String[] singleLine = linesString.split(",");
 
             for (String line : singleLine) {
-                line = line.replace(" ","");
+                line = line.replace(" ", "");
 
-                lines.add(new Line(Integer.parseInt(line),direction));
+                lines.add(new Line(Integer.parseInt(line), direction));
             }
 
         } else {
@@ -143,34 +160,34 @@ public class CityMapBuilder {
     }
 
     public void addNode(String type, String name, String coordinates, String lines, String numberOfTrams) {
-        name = StringUtils.stripAccents(name);
+        name = StringUtils.stripAccents(name).toLowerCase();
 
         if (type.equals("stop")) {
             Node node = new StopNode(
-                                    new Coords2D(coordinates),
-                                    name,
-                                    buildTimetable(name, lines)
-                        );
-            addInitialTrams(node,numberOfTrams);
+                    new Coords2D(coordinates),
+                    name,
+                    buildTimetable(name, lines)
+            );
+            addInitialTrams(node, numberOfTrams);
             nodesMap.put(name, node);
             nodes.add(node);
 
         } else if (type.equals("loop")) {
-            Node node =  new LoopNode(
-                                    new Coords2D(coordinates),
-                                    name,
-                                    buildTimetable(name, lines)
-                        );
-            addInitialTrams(node,numberOfTrams);
-            nodesMap.put(name,node);
+            Node node = new LoopNode(
+                    new Coords2D(coordinates),
+                    name,
+                    buildTimetable(name, lines)
+            );
+            addInitialTrams(node, numberOfTrams);
+            nodesMap.put(name, node);
             nodes.add(node);
 
         } else if (type.equals("junction")) {
             Node node = new JunctionNode(
-                                    name,
-                                    new Coords2D(coordinates)
-                        );
-            nodesMap.put(name,node);
+                    name,
+                    new Coords2D(coordinates)
+            );
+            nodesMap.put(name, node);
             nodes.add(node);
         }
     }
@@ -181,7 +198,7 @@ public class CityMapBuilder {
 
         String[] byLines = numberOfTrams.split(",");
 
-        for (String line: byLines) {
+        for (String line : byLines) {
             String[] tokens;
             String directionString = "";
 
@@ -200,27 +217,27 @@ public class CityMapBuilder {
 
             int linenumber = Integer.parseInt(tokens[0]);
             int quantity = Integer.parseInt(tokens[1]);
-            LineDirection direction = (directionString.equals("NE"))? LineDirection.NE : LineDirection.SW;
+            LineDirection direction = (directionString.equals("NE")) ? LineDirection.NE : LineDirection.SW;
 
             for (int i = 0; i < quantity; i++) {
-                Cell tram = new Cell(TramState.TRAM,0,new Line(linenumber,direction));
+                Cell tram = new Cell(TramState.TRAM, 0, new Line(linenumber, direction));
                 node.addTramToQueue(tram);
             }
         }
     }
 
-    public Map<Line,Timetable> buildTimetable(String lineName, String rawLines) {
+    public Map<Line, Timetable> buildTimetable(String lineName, String rawLines) {
 
         Map<Line, Timetable> timetables = new HashMap<>();
         FileConverter fileConverter = new FileConverter();
         if ((rawLines != null) && (!rawLines.isEmpty())) {
-            String [] lines = rawLines.split(",");
+            String[] lines = rawLines.split(",");
             for (String line : lines) {
                 line = line.replace(" ", "");
 
 
-                String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"-"+lineName.replace(" ","_").toLowerCase() );
-                String stringTimetableSW = fileConverter.fileToString(line +"_"+ "sw"+"-"+lineName.replace(" ","_").toLowerCase() );
+                String stringTimetableNE = fileConverter.fileToString(line + "_" + "ne" + "-" + lineName.replace(" ", "_").toLowerCase());
+                String stringTimetableSW = fileConverter.fileToString(line + "_" + "sw" + "-" + lineName.replace(" ", "_").toLowerCase());
 
                 if (stringTimetableNE.isEmpty()) {
                     timetables.put(new Line(Integer.parseInt(line), LineDirection.NE), new SimpleTimetable());

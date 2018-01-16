@@ -47,15 +47,15 @@ public class LoopNode implements Node {
     @Override
     public Cell getTramFromQueue(List<Line> lines) {
         Cell tram = queue.getTram(lines);
-        if (tram != null)
-            System.out.println("Tramwaj " + tram + " opuścił pętle " + name);
+        //if (tram != null)
+            //System.out.println("Tramwaj " + tram + " opuścił pętle " + name);
         return tram;
 }
     @Override
     public void tramArrived(Cell cell) {
         cell.setLine( cell.getLine().reverseDirection());
-        if (cell != null)
-            System.out.println("Tramwaj " + cell + " dotarł do pętli " + name);
+        //if (cell != null)
+            //System.out.println("Tramwaj " + cell + " dotarł do pętli " + name);
         queue.addTram(cell);
     }
 
@@ -63,4 +63,9 @@ public class LoopNode implements Node {
     public void addTramToQueue(Cell cell) {
         queue.addTram(cell);
     }
+
+    public String toString() {
+        return name + "  (loop)";
+    }
+
 }

@@ -13,7 +13,7 @@ public class GlobalTimer implements Timer {
     private List<Path> pathNetwork;
     private List<Node> nodeNetwork;
     private DepartureTime currentTime = new DepartureTime(0, 0, 0);
-    private Integer oneStepTime = 1;
+    private Integer oneStepTime = 30;
     private Boolean[] randomEventOnTram;
     private int[] durationOfWaiting;
     private static final int chance = 50000;
@@ -60,8 +60,8 @@ public class GlobalTimer implements Timer {
     }
 
     public void nextState() {
-        randomEvent();
-        System.out.println(getCurrentTime());
+        //randomEvent();
+        //System.out.println(getCurrentTime());
         for (int i = 0; i < pathNetwork.size(); i++) {
             pathNetwork.set(i, pathNetwork.get(i).nextState(randomEventOnTram[i] == true, getCurrentTime().toString()));
         }

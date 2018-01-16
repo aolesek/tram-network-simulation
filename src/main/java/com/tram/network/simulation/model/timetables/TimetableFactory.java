@@ -13,6 +13,10 @@ public class TimetableFactory {
         this.timer = timer;
     }
 
+    public int getOneStepTime() {
+        return timer.getOneStepTime();
+    }
+
     public Timetable construct(String departures) {
         String [] lines = departures.split(" ?\\r?\\n ?");
         List<DepartureTime> timetable = new ArrayList<>();

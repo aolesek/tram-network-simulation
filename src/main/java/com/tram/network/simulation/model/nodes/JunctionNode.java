@@ -33,15 +33,15 @@ public class JunctionNode implements Node {
     @Override
     public Cell getTramFromQueue(List<Line> lines) {
         Cell tram = queue.getTram(lines);
-        if (tram != null)
-            System.out.println("Tramwaj " + tram + " opuścił skrzyżowanie " + name + " w kierunku " + lines);
+        //if (tram != null)
+            //System.out.println("Tramwaj " + tram + " opuścił skrzyżowanie " + name + " w kierunku " + lines);
         return tram;
     }
 
     @Override
     public void tramArrived(Cell cell) {
-        if (cell != null)
-            System.out.println("Tramwaj " + cell +  " dotarł do skrzyżowania " + name);
+        //if (cell != null)
+            //System.out.println("Tramwaj " + cell +  " dotarł do skrzyżowania " + name);
         queue.addTram(cell);
     }
 
@@ -64,5 +64,9 @@ public class JunctionNode implements Node {
         }
 
         return trams;
+    }
+
+    public String toString() {
+        return name + "  (junction)";
     }
 }

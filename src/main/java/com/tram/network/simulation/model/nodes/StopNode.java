@@ -47,15 +47,15 @@ public class StopNode implements Node {
     @Override
     public Cell getTramFromQueue(List<Line> lines) {
         Cell tram = queue.getTram(lines);
-        if (tram != null)
-            System.out.println("Tramwaj "  + tram + " opuścił przystanek " + name);
+        //if (tram != null)
+            //System.out.println("Tramwaj "  + tram + " opuścił przystanek " + name);
         return tram;
     }
 
     @Override
     public void tramArrived(Cell cell) {
-        if (cell != null)
-            System.out.println("Tramwaj " + cell + " dotarł do przystanku " + name);
+        //if (cell != null)
+            //System.out.println("Tramwaj " + cell + " dotarł do przystanku " + name);
         queue.addTram(cell);
     }
 
@@ -65,6 +65,6 @@ public class StopNode implements Node {
     }
 
     public String toString() {
-        return name;
+        return name + "  (stop)";
     }
 }
