@@ -14,6 +14,7 @@ import com.tram.network.simulation.model.timetables.Timetable;
 import com.tram.network.simulation.model.timetables.TimetableFactory;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 
 
 import java.io.*;
@@ -98,10 +99,12 @@ public class CityMapBuilder {
     }
 
     public void addPath(String source, String destination, String velocity, String lines, String geoPath) {
+
+
         paths.add(
                 new Path(
-                        nodesMap.get(source),
-                        nodesMap.get(destination),
+                        nodesMap.get(StringUtils.stripAccents(source)),
+                        nodesMap.get(StringUtils.stripAccents(destination)),
                         Integer.parseInt(velocity),
                         buildLines(lines,LineDirection.NE),
                         new GeoPath(geoPath)
@@ -109,8 +112,8 @@ public class CityMapBuilder {
         );
         paths.add(
                 new Path(
-                        nodesMap.get(destination),
-                        nodesMap.get(source),
+                        nodesMap.get(StringUtils.stripAccents(destination)),
+                        nodesMap.get(StringUtils.stripAccents(source)),
                         Integer.parseInt(velocity),
                         buildLines(lines,LineDirection.SW),
                         new GeoPath(geoPath).reverse()
@@ -138,6 +141,7 @@ public class CityMapBuilder {
     }
 
     public void addNode(String type, String name, String coordinates, String lines, String numberOfTrams) {
+        name = StringUtils.stripAccents(name);
 
         if (type.equals("stop")) {
             Node node = new StopNode(

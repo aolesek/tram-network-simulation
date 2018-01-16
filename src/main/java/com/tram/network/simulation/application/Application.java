@@ -40,10 +40,6 @@ public class Application {
 
         Map<String,Node> nodesMap = citymap.getNodesMap();
 
-        nodesMap.get("Wzgorza Krzeslawickie").addTramToQueue(
-                new Cell(TramState.TRAM,0,new Line(1, LineDirection.NE))
-        );
-
 
 
         Thread thread = new Thread(new TimerGovernor(timer));
