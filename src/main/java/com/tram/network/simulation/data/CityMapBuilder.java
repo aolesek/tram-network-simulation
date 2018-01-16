@@ -125,6 +125,8 @@ public class CityMapBuilder {
             String [] singleLine = linesString.split(",");
 
             for (String line : singleLine) {
+                line = line.replace(" ","");
+
                 lines.add(new Line(Integer.parseInt(line),direction));
             }
 
@@ -210,6 +212,7 @@ public class CityMapBuilder {
         if ((rawLines != null) && (!rawLines.isEmpty())) {
             String [] lines = rawLines.split(",");
             for (String line : lines) {
+                line = line.replace(" ", "");
 
 
                 String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"-"+lineName.replace(" ","_").toLowerCase() );
