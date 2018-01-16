@@ -24,7 +24,7 @@ public class GeoPath {
             );
         }
 
-        this.length = calculateLength(points);
+        this.length = calculateLength(points)/8;
     }
 
     public GeoPath(List<Coords2D> pts, double len) {

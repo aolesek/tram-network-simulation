@@ -19,6 +19,7 @@ public class GlobalTimer implements Timer {
     private static final int chance = 50000;
     Random generator = new Random();
 
+
     public List<TramStatus> getTrams() {
         List<TramStatus> trams = new ArrayList<>();
 
@@ -64,7 +65,7 @@ public class GlobalTimer implements Timer {
         for (int i = 0; i < pathNetwork.size(); i++) {
             pathNetwork.set(i, pathNetwork.get(i).nextState(randomEventOnTram[i] == true, getCurrentTime().toString()));
         }
-        currentTime = currentTime.addMinutes(oneStepTime);
+        currentTime = currentTime.addSeconds(oneStepTime);
     }
 
     public int getOneStepTime() {
@@ -105,5 +106,10 @@ public class GlobalTimer implements Timer {
                 }
             }
         }
+    }
+
+
+    public void setCurrentTime(DepartureTime currentTime) {
+        this.currentTime = currentTime;
     }
 }

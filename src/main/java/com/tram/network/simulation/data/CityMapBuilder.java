@@ -16,6 +16,7 @@ import com.tram.network.simulation.model.timetables.Timetable;
 import com.tram.network.simulation.model.timetables.TimetableFactory;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 
 
 import java.io.*;
@@ -71,7 +72,8 @@ public class CityMapBuilder {
                         type,
                         record.get(1),
                         record.get(2),
-                        record.get(3));
+                        record.get(3),
+                        record.get(4));
             }
         }
         in.close();
@@ -100,10 +102,12 @@ public class CityMapBuilder {
     }
 
     public void addPath(String source, String destination, String defaultVelocity, String lines, String geoPath, String velocity) {
+
+
         paths.add(
                 new Path(
-                        nodesMap.get(source),
-                        nodesMap.get(destination),
+                        nodesMap.get(StringUtils.stripAccents(source)),
+                        nodesMap.get(StringUtils.stripAccents(destination)),
                         Integer.parseInt(defaultVelocity),
                         buildLines(lines,LineDirection.NE),
                         new GeoPath(geoPath),
@@ -111,9 +115,8 @@ public class CityMapBuilder {
                 )
         );
         paths.add(
-                new Path(
-                        nodesMap.get(destination),
-                        nodesMap.get(source),
+                new Path(nodesMap.get(StringUtils.stripAccents(destination)),
+                        nodesMap.get(StringUtils.stripAccents(source)),
                         Integer.parseInt(defaultVelocity),
                         buildLines(lines,LineDirection.SW),
                         new GeoPath(geoPath).reverse(),
@@ -129,6 +132,8 @@ public class CityMapBuilder {
             String [] singleLine = linesString.split(",");
 
             for (String line : singleLine) {
+                line = line.replace(" ","");
+
                 lines.add(new Line(Integer.parseInt(line),direction));
             }
 
@@ -139,7 +144,8 @@ public class CityMapBuilder {
         return lines;
     }
 
-    public void addNode(String type, String name, String coordinates, String lines) {
+    public void addNode(String type, String name, String coordinates, String lines, String numberOfTrams) {
+        name = StringUtils.stripAccents(name);
 
         if (type.equals("stop")) {
             Node node = new StopNode(
@@ -177,6 +183,7 @@ public class CityMapBuilder {
         if ((rawLines != null) && (!rawLines.isEmpty())) {
             String [] lines = rawLines.split(",");
             for (String line : lines) {
+                line = line.replace(" ", "");
 
 
                 String stringTimetableNE = fileConverter.fileToString(line +"_"+ "ne"+"-"+lineName.replace(" ","_").toLowerCase() );
