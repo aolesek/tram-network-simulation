@@ -29,21 +29,31 @@ public class StopQueue implements Queue {
     @Override
     public Cell getTram(List<Line> lines) {
         Cell tram = null;
-        if ( ! trams.isEmpty() )
-            tram = trams.get(0);
+
+
+        List<Cell> rigthDirectionTrams = new ArrayList<>();
+        for (int i = 0; i < trams.size(); i++) {
+            if (lines.contains(trams.get(i).getLine())) {
+                rigthDirectionTrams.add(trams.get(i));
+            }
+        }
+
+        if ( ! rigthDirectionTrams.isEmpty() )
+            tram = rigthDirectionTrams.get(0);
 
         if ( tram != null) {
             Line line = tram.getLine();
             if (timetables.containsKey(line)) {
                 Timetable lineTimetable = timetables.get(line);
+
                 if (lines.contains(line) && (lineTimetable != null) && lineTimetable.isItDepartureTime() ) {
-                    trams.remove(0);
+                    trams.remove(tram);
                     lineTimetable.tramDeparted();
                     return tram;
                 }
             } else {
                if (lines.contains(line)) {
-                   trams.remove(0);
+                   trams.remove(tram);
                    return tram;
                }
 

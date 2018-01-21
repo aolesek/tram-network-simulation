@@ -36,7 +36,7 @@ public class LoopNode implements Node {
         for (Cell tram : stoppedTrams) {
             trams.add(
                     new TramStatus(
-                            tram.getLine(), name, coordinates, 1.0
+                            tram.getLine(), name, coordinates, 1.0,tram.getOfficialLine()
                     )
             );
         }
@@ -54,6 +54,7 @@ public class LoopNode implements Node {
     @Override
     public void tramArrived(Cell cell) {
         cell.setLine( cell.getLine().reverseDirection());
+        cell.setOfficialLine(cell.getOfficialLine().reverseDirection());
         //if (cell != null)
             //System.out.println("Tramwaj " + cell + " dotarł do pętli " + name);
         queue.addTram(cell);
