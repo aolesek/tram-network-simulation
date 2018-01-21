@@ -16,6 +16,22 @@ public class Line {
         this.direction = direction;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public LineDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(LineDirection direction) {
+        this.direction = direction;
+    }
+
     private LineDirection oppositeDirection() {
         return (direction == LineDirection.NE) ? LineDirection.SW : LineDirection.NE;
     }

@@ -1,6 +1,7 @@
 package com.tram.network.simulation.data;
 
 
+import com.tram.network.simulation.application.ApplicationUtils;
 import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.geo.Coords2D;
 import com.tram.network.simulation.model.geo.GeoPath;
@@ -149,10 +150,21 @@ public class CityMapBuilder {
             for (String line : singleLine) {
                 line = line.replace(" ", "");
 
+                if (line.contains("!"))
+                    direction = (direction == LineDirection.NE) ? LineDirection.SW : LineDirection.NE;
+
+                line = line.replace("!","");
+
                 lines.add(new Line(Integer.parseInt(line), direction));
             }
 
         } else {
+            linesString = linesString.replace(" ", "");
+
+            if (linesString.contains("!"))
+                direction = (direction == LineDirection.NE) ? LineDirection.SW : LineDirection.NE;
+
+            linesString = linesString.replace("!","");
             lines.add(new Line(Integer.parseInt(linesString), direction));
         }
 

@@ -52,6 +52,8 @@ public class Application {
 
         port(4567);
         get("/trams", (req, res) -> timer.getTrams(), json);
+        CityMap finalCitymap = citymap;
+        get("/citymap", (req, res) -> finalCitymap, json);
         get("/time", (req, res) -> timer.getCurrentTime(), json);
         get("/step", (req, res) -> timer.getOneStepTime(), json);
 

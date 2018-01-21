@@ -5,16 +5,29 @@ public class Cell {
     private TramState state = TramState.VOID;
     private Integer coords = 0;
     private Line line;
-
+    private Line officialLine;
 
     public Cell(TramState s, int c, Line l) {
         this.state = s;
         this.coords = c;
         this.line = l;
+        this.officialLine = new Line(l.getNumber(), l.getDirection());
+    }
+
+    public Line getOfficialLine() {
+        return officialLine;
+    }
+
+    public void setOfficialLine(Line officialLine) {
+        this.officialLine = officialLine;
     }
 
     public TramState getState() {
         return state;
+    }
+
+    public void setState(TramState state) {
+        this.state = state;
     }
 
     Integer getCoords() {
