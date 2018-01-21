@@ -28,7 +28,7 @@
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/time">stop</a>
+            <a class="nav-link" href="#" onclick="startStop()">stop</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">json data</a>
@@ -90,6 +90,17 @@
               alert('Oops, unable to copy');
           }
 
+      }
+
+      function startStop() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  console.log('start stop');
+              }
+          };
+          xhttp.open("GET", "/startstop", true);
+          xhttp.send();
       }
 
       function hideTrams() {

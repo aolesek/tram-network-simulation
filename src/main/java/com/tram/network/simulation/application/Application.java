@@ -17,7 +17,8 @@ import java.util.Map;
 import static spark.Spark.*;
 
 public class Application {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws InterruptedException {
 
 
         GlobalTimer timer = new GlobalTimer();
@@ -41,9 +42,10 @@ public class Application {
         Map<String,Node> nodesMap = citymap.getNodesMap();
 
 
-
-        Thread thread = new Thread(new TimerGovernor(timer));
+        TimerGovernor governor = new TimerGovernor(timer);
+        Thread thread = new Thread(governor);
         thread.start();
+        startStop(governor);
 
         externalStaticFileLocation("src/main/resources/public/");
 
@@ -57,5 +59,17 @@ public class Application {
         get("/time", (req, res) -> timer.getCurrentTime(), json);
         get("/step", (req, res) -> timer.getOneStepTime(), json);
 
+        get("/startstop", (req, res) -> startStop(governor));
+
+
+    }
+
+    private static boolean startStop(TimerGovernor governor) throws InterruptedException {
+        if (governor.pause == false) {
+            governor.pause = true;
+        } else {
+            governor.pause = false;
+        }
+        return true;
     }
 }

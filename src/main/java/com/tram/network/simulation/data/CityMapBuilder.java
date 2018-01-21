@@ -150,12 +150,16 @@ public class CityMapBuilder {
             for (String line : singleLine) {
                 line = line.replace(" ", "");
 
-                if (line.contains("!"))
-                    direction = (direction == LineDirection.NE) ? LineDirection.SW : LineDirection.NE;
+                if (line.contains("!")) {
+                    line = line.replace("!","");
+                    LineDirection newDirection = (direction == LineDirection.NE) ? LineDirection.SW : LineDirection.NE;
+                    lines.add(new Line(Integer.parseInt(line), newDirection));
 
-                line = line.replace("!","");
+                } else {
+                    lines.add(new Line(Integer.parseInt(line), direction));
+                }
 
-                lines.add(new Line(Integer.parseInt(line), direction));
+
             }
 
         } else {
