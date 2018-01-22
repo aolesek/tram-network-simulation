@@ -40,6 +40,13 @@ public class GPSTrams {
                 JsonObject vehicle = vehicles.get(i).getAsJsonObject();
                 if ( vehicle.get("name") !=null ) {
                     String name = vehicle.get("name").getAsString();
+                    String[] split = name.split(" ");
+                    name = split[0]+ " ";
+                    if (split.length > 1)
+                        name += split[1].substring(0,2);
+                    if (split.length > 2)
+                        name += split[2].substring(0,2);
+
                     double longitude = vehicle.get("longitude").getAsDouble() / 3600000.0;
                     double latitude = vehicle.get("latitude").getAsDouble() / 3600000.0;
                     TramStatus gpsTram = new TramStatus(null,name,new Coords2D(longitude,latitude),0.0,null);

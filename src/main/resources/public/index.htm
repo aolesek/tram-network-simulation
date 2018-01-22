@@ -31,7 +31,7 @@
             <a class="nav-link" href="#" onclick="startStop()">stop</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" onclick="gpsOn()">gps</a>
+            <a class="nav-link" id="agps" href="#" onclick="gpsOn()">gps</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">json data</a>
@@ -105,6 +105,7 @@
           };
           xhttp.open("GET", "/startstop", true);
           xhttp.send();
+          
       }
 
       function hideTrams() {
@@ -150,10 +151,28 @@
           document.getElementById('tracking').innerHTML = ''
       });
 
+      var gpscurrentMarkers = new Array();
+
+      function gpsOff() {
+          gpsData = false;
+          document.getElementById("agps").setAttribute("onclick","gpsOn()");
+
+
+          setTimeout( function() {
+              if (gpscurrentMarkers) {
+                  for (var j = 0; j < gpscurrentMarkers.length; j++) {
+                      mymap.removeLayer(gpscurrentMarkers[j]);
+                  }
+              }
+          },3000);
+
+      }
+
       function gpsOn() {
           gpsData = true;
+          document.getElementById("agps").setAttribute("onclick","gpsOff()");
 
-          var gpscurrentMarkers = new Array();
+
 
           var gpsxhttp = new XMLHttpRequest();
 
