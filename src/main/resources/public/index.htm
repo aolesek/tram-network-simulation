@@ -30,6 +30,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="startStop()">stop</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="gpsOn()">gps</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">json data</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -57,6 +60,7 @@
       <div id="infoparent">
         <p id="time"></p>
         <p id="info"></p>
+        <p id="gpsInfo"></p>
         <textarea id="tracking"></textarea>
         <button onclick="copyclear()">copy&clear</button>
         <button id="hidebutton" onclick="hideTrams()">hide trams</button>
@@ -105,17 +109,23 @@
 
       function hideTrams() {
           document.getElementById('info').setAttribute("style", "display: none");
+          document.getElementById('gpsInfo').setAttribute("style", "display: none");
+
           document.getElementById('hidebutton').setAttribute("onclick", "showTrams()");
           document.getElementById('hidebutton').innerHTML = "show trams";
       }
 
       function showTrams() {
           document.getElementById('info').setAttribute("style", "display: block");
+          document.getElementById('gpsInfo').setAttribute("style", "display: block");
+
           document.getElementById('hidebutton').setAttribute("onclick", "hideTrams()");
           document.getElementById('hidebutton').innerHTML = "hide trams";
       }
 
       hideTrams();
+
+      var gpsData = false;
 
       var mymap = L.map('mapid').setView([50.0663, 19.922], 13);
 
@@ -140,6 +150,54 @@
           document.getElementById('tracking').innerHTML = ''
       });
 
+      function gpsOn() {
+          gpsData = true;
+
+          var gpscurrentMarkers = new Array();
+
+          var gpsxhttp = new XMLHttpRequest();
+
+          gpsxhttp.open("GET", "/gpsTrams", true);
+          gpsxhttp.send();
+
+          gpsxhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  var gpsobj = JSON.parse(this.responseText);
+                  document.getElementById("gpsInfo").innerHTML = this.responseText;
+                  if (gpscurrentMarkers) {
+                      for (var j = 0; j < gpscurrentMarkers.length; j++) {
+                          mymap.removeLayer(gpscurrentMarkers[j]);
+                      }
+                  }
+
+                  for (var i = 0; i < gpsobj.length; i++) {
+                      var marker =
+                          gpscurrentMarkers.push(L.marker([gpsobj[i].coordinates.y, gpsobj[i].coordinates.x]
+                              , {
+                                  icon: new L.DivIcon({
+                                      className: 'my-div-icon',
+                                      html: '<img class="my-div-image" src="2r.png"/>'+
+                                      '<span class="my-div-span">'+gpsobj[i].pathId + '</span>'
+                                  })
+                              }
+                          ).addTo(mymap));
+                  }
+
+                  if (gpsData) {
+                      gpsxhttp.open("GET", "/gpsTrams", true);
+                      gpsxhttp.send();
+                  }
+
+              }
+          };
+
+      }
+
+      //GPS DATA
+
+
+
+      //END GPS DATA
 
 
       var currentMarkers = new Array();

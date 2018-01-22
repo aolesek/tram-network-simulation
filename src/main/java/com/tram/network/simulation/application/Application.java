@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tram.network.simulation.data.CityMap;
 import com.tram.network.simulation.data.CityMapBuilder;
+import com.tram.network.simulation.data.GPSTrams;
 import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.nodes.Node;
 import com.tram.network.simulation.model.timetables.DepartureTime;
@@ -60,6 +61,7 @@ public class Application {
         get("/step", (req, res) -> timer.getOneStepTime(), json);
 
         get("/startstop", (req, res) -> startStop(governor));
+        get("/gpsTrams", (req,res) -> GPSTrams.getTrams(), json);
 
 
     }
