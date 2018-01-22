@@ -18,8 +18,22 @@ import java.util.List;
 
 public class GPSTrams {
 
+    private static List<TramStatus> oldTrams;
+    private static long lastTimeUpdated = 0;
+
+
     public static List<TramStatus> getTrams() {
         List<TramStatus> trams = new ArrayList<>();
+
+        if ((System.currentTimeMillis() - lastTimeUpdated) < 5000) {
+            return oldTrams;
+        }
+
+        lastTimeUpdated = System.currentTimeMillis();
+
+        oldTrams = new ArrayList<TramStatus>();
+
+
 
         String sURL = "http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles?positionType=CORRECTED&colorType=ROUTE_BASED"; //just a string
 
@@ -41,11 +55,11 @@ public class GPSTrams {
                 if ( vehicle.get("name") !=null ) {
                     String name = vehicle.get("name").getAsString();
                     String[] split = name.split(" ");
-                    name = split[0]+ " ";
+                    name = split[0];
                     if (split.length > 1)
-                        name += split[1].substring(0,2);
+                        name += split[1].substring(0,3);
                     if (split.length > 2)
-                        name += split[2].substring(0,2);
+                        name += split[2].substring(0,3);
 
                     double longitude = vehicle.get("longitude").getAsDouble() / 3600000.0;
                     double latitude = vehicle.get("latitude").getAsDouble() / 3600000.0;
@@ -59,7 +73,7 @@ public class GPSTrams {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        oldTrams.addAll(trams);
         return trams;
 
     }

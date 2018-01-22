@@ -33,6 +33,20 @@
           <li class="nav-item">
             <a class="nav-link" id="agps" href="#" onclick="gpsOn()">gps</a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="realTime()">real time</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="speedUp()">speed up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="speedDown()">speed down</a>
+          </li>
+
+
+
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">json data</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -41,14 +55,7 @@
               <a class="dropdown-item" href="/step">one step time</a>
             </div>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">speed</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="/time/real">real time</a>
-              <a class="dropdown-item" href="/time/up">speed up</a>
-              <a class="dropdown-item" href="/time/down">speed down</a>
-            </div>
-          </li>
+
         </ul>
       </div>
     </nav>
@@ -77,8 +84,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script>
+      var refreshInterval = 100;
+
+        function realTime() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log('speed changed to real-time');
+                }
+            };
+            xhttp.open("GET", "/time/real", true);
+            xhttp.send();
+        }
+
+        function speedUp() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log('speed increased');
+                }
+            };
+            xhttp.open("GET", "/time/up", true);
+            xhttp.send();
+        }
+
+        function speedDown() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log('speed decreased');
+                }
+            };
+            xhttp.open("GET", "/time/down", true);
+            xhttp.send();
+        }
 
       function copyclear() {
+
 
 
           try {
@@ -105,6 +147,7 @@
           };
           xhttp.open("GET", "/startstop", true);
           xhttp.send();
+
       }
 
       function hideTrams() {
@@ -157,12 +200,14 @@
           document.getElementById("agps").setAttribute("onclick","gpsOn()");
 
 
-
-          while (gpscurrentMarkers) {
-              for (var j = 0; j < gpscurrentMarkers.length; j++) {
-                  mymap.removeLayer(gpscurrentMarkers[j]);
+          setTimeout( function() {
+              if (gpscurrentMarkers) {
+                  for (var j = 0; j < gpscurrentMarkers.length; j++) {
+                      mymap.removeLayer(gpscurrentMarkers[j]);
+                  }
               }
-          }
+          },3000);
+
       }
 
       function gpsOn() {
@@ -193,15 +238,18 @@
                                   icon: new L.DivIcon({
                                       className: 'my-div-icon',
                                       html: '<img class="my-div-image" src="2r.png"/>'+
-                                      '<span class="my-div-span">'+gpsobj[i].pathId + '</span>'
+                                      '<span class="my-div-span" style="font-size: 8px;">'+gpsobj[i].pathId + '</span>'
                                   })
                               }
                           ).addTo(mymap));
                   }
 
                   if (gpsData) {
-                      gpsxhttp.open("GET", "/gpsTrams", true);
-                      gpsxhttp.send();
+                      setTimeout(function() {
+                          gpsxhttp.open("GET", "/gpsTrams", true);
+                          gpsxhttp.send();
+                      }, refreshInterval);
+
                   }
 
               }
@@ -246,8 +294,11 @@
              ).addTo(mymap));
           }
 
-          xhttp.open("GET", "/trams", true);
-          xhttp.send();
+          setTimeout(function () {
+              xhttp.open("GET", "/trams", true);
+              xhttp.send();
+          }, refreshInterval);
+
         }
       };
 
@@ -261,12 +312,16 @@
 
           document.getElementById("time").innerHTML = this.responseText;
 
-          time.open("GET", "/time", true);
-          time.send();
+          setTimeout(function() {
+              time.open("GET", "/time", true);
+              time.send();
+          }, refreshInterval)
+
         }
       };
 
 
 
     </script>
-  </bo
+  </body>
+</html>

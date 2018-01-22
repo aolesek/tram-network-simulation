@@ -23,7 +23,7 @@ public class Application {
 
 
         GlobalTimer timer = new GlobalTimer();
-        timer.setCurrentTime(new DepartureTime(4,20,0));
+        timer.setCurrentTime(new DepartureTime(4, 20, 0));
 
         CityMap citymap = null;
 
@@ -40,10 +40,14 @@ public class Application {
 
         timer.setCityMap(citymap);
 
-        Map<String,Node> nodesMap = citymap.getNodesMap();
+        Map<String, Node> nodesMap = citymap.getNodesMap();
 
 
         TimerGovernor governor = new TimerGovernor(timer);
+//        governor.setBreakType(BreakType.REAL);
+//        governor.setOneStepTime(ApplicationUtils.globalOneStepTime);
+        governor.setBreakType(BreakType.FIXED);
+        governor.setTimeBreak(2);
         Thread thread = new Thread(governor);
         thread.start();
         startStop(governor);
@@ -61,9 +65,31 @@ public class Application {
         get("/step", (req, res) -> timer.getOneStepTime(), json);
 
         get("/startstop", (req, res) -> startStop(governor));
-        get("/gpsTrams", (req,res) -> GPSTrams.getTrams(), json);
+        get("/gpsTrams", (req, res) -> GPSTrams.getTrams(), json);
+        get("/time/real", (req, res) -> {
+            governor.setBreakType(BreakType.REAL);
+            governor.setOneStepTime(ApplicationUtils.globalOneStepTime);
+            return "ok";
+        }, json);
+        get("/time/up", (req, res) -> {
+            governor.setBreakType(BreakType.FIXED);
+            governor.speedUp();
+            return "ok";
+        }, json);
 
+        get("/time/down", (req, res) -> {
+            governor.setBreakType(BreakType.REAL);
+            governor.speedDown();
+            return "ok";
+        }, json);
 
+        get("/time/stoptime/:time", (req, res) -> {
+            String time = req.params("time");
+
+            ApplicationUtils.timeAtStop = Integer.parseInt(time);
+
+            return ApplicationUtils.timeAtStop;
+        }, json);
     }
 
     private static boolean startStop(TimerGovernor governor) throws InterruptedException {
