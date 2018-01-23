@@ -47,7 +47,7 @@ public class Application {
 //        governor.setBreakType(BreakType.REAL);
 //        governor.setOneStepTime(ApplicationUtils.globalOneStepTime);
         governor.setBreakType(BreakType.FIXED);
-        governor.setTimeBreak(2);
+        //governor.setTimeBreak(2);
         Thread thread = new Thread(governor);
         thread.start();
         startStop(governor);
@@ -74,13 +74,13 @@ public class Application {
         get("/time/up", (req, res) -> {
             governor.setBreakType(BreakType.FIXED);
             governor.speedUp();
-            return "ok";
+            return governor.getTimeBreak();
         }, json);
 
         get("/time/down", (req, res) -> {
             governor.setBreakType(BreakType.REAL);
             governor.speedDown();
-            return "ok";
+            return governor.getTimeBreak();
         }, json);
 
         get("/time/stoptime/:time", (req, res) -> {

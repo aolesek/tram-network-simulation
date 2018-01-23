@@ -40,6 +40,8 @@ public class StopQueue implements Queue {
     public Cell getTram(List<Line> lines) {
         Cell tram = null;
 
+        if (lines == null)
+            return null;
 
         List<Cell> rigthDirectionTrams = new ArrayList<>();
         for (int i = 0; i < trams.size(); i++) {
@@ -56,6 +58,7 @@ public class StopQueue implements Queue {
 
         if ( (tram != null) && (tram.getState() != TramState.VOID)) {
             Line line = tram.getLine();
+
             if (timetables.containsKey(line)) {
                 Timetable lineTimetable = timetables.get(line);
 

@@ -143,6 +143,9 @@ public class CityMapBuilder {
 
     private List<Line> buildLines(String linesString, LineDirection direction) {
         List<Line> lines = new ArrayList<>();
+        if (linesString == null) {
+            return null;
+        }
 
         if (linesString.contains(",")) {
             String[] singleLine = linesString.split(",");

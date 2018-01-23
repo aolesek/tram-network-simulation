@@ -20,7 +20,9 @@ public class StopTimetable implements Timetable {
 
     @Override
     public Boolean isItDepartureTime() {
-        return  globalTimer.getCurrentTime().isGreaterThan( departures.get(0) );
+        if ((departures!=null) && (departures.size()>0))
+            return  globalTimer.getCurrentTime().isGreaterThan( departures.get(0) );
+        return true;
     }
 
     @Override
