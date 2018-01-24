@@ -111,14 +111,14 @@ public class StopQueue implements Queue {
 //        if ((t!=null)) {
 //            t.isThereADelay(null,name);
 //        }
-        Line checkedLine = new Line(3, LineDirection.NE);
+        Line checkedLine = new Line(6, LineDirection.NE);
         Timetable t = timetables.get(checkedLine);
 
         if ((t!=null)) {
             t.isThereADelay(checkedLine,name);
         }
 
-        checkedLine = new Line(3, LineDirection.SW);
+        checkedLine = new Line(6, LineDirection.SW);
         t = timetables.get(checkedLine);
 
         if ((t!=null)) {
