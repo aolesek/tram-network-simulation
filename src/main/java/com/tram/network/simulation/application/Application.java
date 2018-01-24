@@ -26,7 +26,7 @@ public class Application {
 
 
         GlobalTimer timer = new GlobalTimer();
-        timer.setCurrentTime(new DepartureTime(4, 45, 0));
+        timer.setCurrentTime(new DepartureTime(4, 37, 0));
 
         List<Integer> invertedOnes = new ArrayList<>();
         invertedOnes.add(2);

@@ -40,7 +40,7 @@ public class StopTimetable implements Timetable {
 
                 if (withName.isEmpty()) {
                     ApplicationUtils.missingTramNodes.add(name);
-                    System.out.println("Brak tramwaju na "+ name + " opóźnienie lub brak tramwaju rozpoczynającego kurs na tym przystanku. ("+departures.get(0)+")");
+                    System.out.println("Brak tramwaju na "+ name + " opóźnienie lub brak tramwaju rozpoczynającego kurs na tym przystanku. ("+departures.get(0)+") ["+line+"]");
                 }
                 return true;
                 }
