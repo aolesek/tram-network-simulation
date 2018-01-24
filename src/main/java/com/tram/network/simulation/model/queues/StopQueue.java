@@ -111,19 +111,21 @@ public class StopQueue implements Queue {
 //        if ((t!=null)) {
 //            t.isThereADelay(null,name);
 //        }
-        Line checkedLine = new Line(1, LineDirection.NE);
-        Timetable t = timetables.get(checkedLine);
 
-        if ((t!=null)) {
-            t.isThereADelay(checkedLine,name);
-        }
-
-        checkedLine = new Line(1, LineDirection.SW);
-        t = timetables.get(checkedLine);
-
-        if ((t!=null)) {
-            t.isThereADelay(checkedLine,name);
-        }
+//      helps in finding start tram stops
+//        Line checkedLine = new Line(1, LineDirection.NE);
+//        Timetable t = timetables.get(checkedLine);
+//
+//        if ((t!=null)) {
+//            t.isThereADelay(checkedLine,name);
+//        }
+//
+//        checkedLine = new Line(1, LineDirection.SW);
+//        t = timetables.get(checkedLine);
+//
+//        if ((t!=null)) {
+//            t.isThereADelay(checkedLine,name);
+//        }
 
         return null;
     }
