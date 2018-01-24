@@ -20,7 +20,8 @@ public class StopNode implements Node {
     public StopNode(Coords2D coordinates, String name, Map<Line,Timetable> timetables) {
         this.coordinates = coordinates;
         this.name = name;
-        queue = new StopQueue(timetables);
+        queue = new StopQueue(timetables,name);
+
     }
 
     @Override
@@ -31,7 +32,7 @@ public class StopNode implements Node {
         for (Cell tram : stoppedTrams) {
             trams.add(
                     new TramStatus(
-                            tram.getLine(), name, coordinates, 1.0,tram.getOfficialLine()
+                            tram.getId(), tram.getLine(), name, coordinates, 1.0,tram.getOfficialLine()
                     )
             );
         }
@@ -61,7 +62,7 @@ public class StopNode implements Node {
 
     @Override
     public void addTramToQueue(Cell cell) {
-        queue.addTram(cell);
+        queue.addStartingTram(cell);
     }
 
     public String toString() {

@@ -13,6 +13,9 @@ import spark.ResponseTransformer;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
@@ -23,7 +26,13 @@ public class Application {
 
 
         GlobalTimer timer = new GlobalTimer();
-        timer.setCurrentTime(new DepartureTime(4, 20, 0));
+        timer.setCurrentTime(new DepartureTime(4, 45, 0));
+
+        List<Integer> invertedOnes = new ArrayList<>();
+        invertedOnes.add(2);
+
+        ApplicationUtils.invertedLines.addAll(invertedOnes);
+
 
         CityMap citymap = null;
 

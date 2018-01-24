@@ -99,7 +99,7 @@ public class DepartureTime implements Comparable<DepartureTime>{
 
     public int compareTo(DepartureTime t) {
         int thisraw = 1000000*hour  + 1000*minute   + second;
-        int theiraw = 1000009*t.hour+ 1000*t.minute + t.second;
+        int theiraw = 1000000*t.hour+ 1000*t.minute + t.second;
 
         if (thisraw < theiraw) {
             return -1;

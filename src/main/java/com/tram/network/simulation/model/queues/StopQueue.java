@@ -4,6 +4,7 @@ import com.tram.network.simulation.application.ApplicationUtils;
 import com.tram.network.simulation.model.base.Cell;
 import com.tram.network.simulation.model.base.Line;
 import com.tram.network.simulation.model.base.LineDirection;
+import com.tram.network.simulation.model.nodes.Node;
 import com.tram.network.simulation.model.timetables.Timetable;
 import com.tram.network.simulation.model.base.TramState;
 
@@ -14,11 +15,19 @@ import java.util.Map;
 public class StopQueue implements Queue {
 
     private List<Cell> trams = new ArrayList<>();
+    private List<Cell> startingTrams = new ArrayList();
     private Map<Line,Timetable> timetables;
+    private String name;
 
     public StopQueue(Map<Line,Timetable> timetables) {
         this.timetables = timetables;
     }
+
+    public StopQueue(Map<Line,Timetable> timetables, String name) {
+        this.timetables = timetables;
+        this.name = name;
+    }
+
 
     @Override
     public void addTram(Cell cell) {
@@ -27,6 +36,12 @@ public class StopQueue implements Queue {
         cell.setCoords(0);
         waitNSteps(ApplicationUtils.timeAtStop);
         trams.add(cell);
+    }
+
+    public void addStartingTram(Cell cell) {
+        if (cell.getState() == TramState.VOID) throw new IllegalArgumentException();
+        cell.setCoords(0);
+        startingTrams.add(cell);
     }
 
     public void waitNSteps(int n) {
@@ -43,10 +58,14 @@ public class StopQueue implements Queue {
         if (lines == null)
             return null;
 
+        List<Cell> allTrams = new ArrayList<>();
+        allTrams.addAll(trams);
+        allTrams.addAll(startingTrams);
+
         List<Cell> rigthDirectionTrams = new ArrayList<>();
-        for (int i = 0; i < trams.size(); i++) {
-            if (lines.contains(trams.get(i).getLine()) || (trams.get(i).getState() == TramState.VOID)) {
-                rigthDirectionTrams.add(trams.get(i));
+        for (int i = 0; i < allTrams.size(); i++) {
+            if (lines.contains(allTrams.get(i).getLine()) || (allTrams.get(i).getState() == TramState.VOID)) {
+                rigthDirectionTrams.add(allTrams.get(i));
             }
         }
 
@@ -64,12 +83,17 @@ public class StopQueue implements Queue {
 
                 if (lines.contains(line) && (lineTimetable != null) && lineTimetable.isItDepartureTime() ) {
                     trams.remove(tram);
+                    if (startingTrams.contains(tram))
+                        startingTrams.remove(tram);
+
                     lineTimetable.tramDeparted();
                     return tram;
                 }
             } else {
                if (lines.contains(line)) {
                    trams.remove(tram);
+                   if (startingTrams.contains(tram))
+                       startingTrams.remove(tram);
                    return tram;
                }
 
@@ -78,6 +102,20 @@ public class StopQueue implements Queue {
 
         } else {
             trams.remove(tram); // removing void tram
+            if (startingTrams.contains(tram))
+                startingTrams.remove(tram);
+        }
+
+//        Timetable t = timetables.get(new Line(1, LineDirection.SW));
+//
+//        if ((t!=null)) {
+//            t.isThereADelay(null,name);
+//        }
+
+       Timetable t = timetables.get(new Line(2, LineDirection.NE));
+
+        if ((t!=null)) {
+            t.isThereADelay(null,name);
         }
 
         return null;

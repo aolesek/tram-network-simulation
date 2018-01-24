@@ -1,6 +1,7 @@
 package com.tram.network.simulation.data;
 
 
+import com.tram.network.simulation.application.Application;
 import com.tram.network.simulation.application.ApplicationUtils;
 import com.tram.network.simulation.model.base.*;
 import com.tram.network.simulation.model.geo.Coords2D;
@@ -94,13 +95,14 @@ public class CityMapBuilder {
                         record2.get(3),
                         record2.get(4),
                         record2.get(5),
-                        record2.get(6)
+                        record2.get(6),
+                        record2.get(7)
                 );
             }
         }
     }
 
-    public void addPath(String source, String destination, String defaultVelocityStr, String lines, String geoPath, String velocityStr) {
+    public void addPath(String source, String destination, String defaultVelocityStr, String lines, String geoPath, String velocityStr, String travelTimeStr) {
 
         int defaultVelocity = Integer.parseInt(defaultVelocityStr);
         int velocity = Integer.parseInt(velocityStr);
@@ -108,8 +110,27 @@ public class CityMapBuilder {
         defaultVelocity *= 0.278; //to m/s
         velocity *= 0.278; // to m/s
 
-        if ((defaultVelocity <= 3) || (velocity <= 3))
+        // attempt to calculate average velocity based on timetable and length
+        if ((travelTimeStr != null) && (!travelTimeStr.isEmpty())) {
+            int integerLength = new GeoPath(geoPath).getIntegerLength();
+            int travelTime = (int) (60.0 * Double.parseDouble(travelTimeStr)); // travel time seconds
+
+            double velocityRatio = ((double) velocity) /((double) defaultVelocity);
+
+            defaultVelocity = (int) ((integerLength / travelTime) * ApplicationUtils.normalTrafficVelocityFactor);
+            velocity =  (int) (velocityRatio*defaultVelocity*ApplicationUtils.highTrafficVelocityFactor);
+
+        }
+
+
+
+
+
+        if ((defaultVelocity < 1) || (velocity < 1)) {
             System.out.println(source + " to " + destination + " prędkośc za niska!");
+            defaultVelocity = 1;
+            velocity = 1;
+        }
 
 
         defaultVelocity *= timetableFactory.getOneStepTime(); // m/s * one step time in seconds => meters by iteration
@@ -239,7 +260,7 @@ public class CityMapBuilder {
             LineDirection direction = (directionString.equals("NE")) ? LineDirection.NE : LineDirection.SW;
 
             for (int i = 0; i < quantity; i++) {
-                Cell tram = new Cell(TramState.TRAM, 0, new Line(linenumber, direction));
+                Cell tram = new Cell(ApplicationUtils.getId(),TramState.TRAM, 0, new Line(linenumber, direction));
                 node.addTramToQueue(tram);
             }
         }
@@ -248,15 +269,23 @@ public class CityMapBuilder {
     public Map<Line, Timetable> buildTimetable(String lineName, String rawLines) {
 
         Map<Line, Timetable> timetables = new HashMap<>();
-        FileConverter fileConverter = new FileConverter();
+
         if ((rawLines != null) && (!rawLines.isEmpty())) {
             String[] lines = rawLines.split(",");
             for (String line : lines) {
                 line = line.replace(" ", "");
 
-
+                FileConverter fileConverter = new FileConverter();
                 String stringTimetableNE = fileConverter.fileToString(line + "_" + "ne" + "-" + lineName.replace(" ", "_").toLowerCase());
+                fileConverter = new FileConverter();
                 String stringTimetableSW = fileConverter.fileToString(line + "_" + "sw" + "-" + lineName.replace(" ", "_").toLowerCase());
+
+                if (ApplicationUtils.isInverted(Integer.parseInt(line))) {
+                    String temporaryTimetable = new String(stringTimetableNE);
+                    stringTimetableNE = stringTimetableSW;
+                    stringTimetableSW = temporaryTimetable;
+
+                }
 
                 if (stringTimetableNE.isEmpty()) {
                     timetables.put(new Line(Integer.parseInt(line), LineDirection.NE), new SimpleTimetable());

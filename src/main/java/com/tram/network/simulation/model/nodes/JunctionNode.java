@@ -58,7 +58,7 @@ public class JunctionNode implements Node {
         for (Cell tram : stoppedTrams) {
             trams.add(
                     new TramStatus(
-                            tram.getLine(), name, coordinates, 1.0,tram.getOfficialLine()
+                            tram.getId(), tram.getLine(), name, coordinates, 1.0,tram.getOfficialLine()
                     )
             );
         }

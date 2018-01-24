@@ -35,7 +35,7 @@ public class TimerGovernor implements Runnable {
 
     public void speedUp() {
         if (this.timeBreak > 0) {
-            timeBreak -= 3;
+            timeBreak -= 15;
             if (timeBreak < 0) {
                 timeBreak = 0;
             }
@@ -43,7 +43,7 @@ public class TimerGovernor implements Runnable {
     }
 
     public void speedDown() {
-        timeBreak += 3;
+        timeBreak += 15;
     }
 
     @Override

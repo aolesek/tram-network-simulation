@@ -1,5 +1,6 @@
 package com.tram.network.simulation.model.base;
 
+import com.tram.network.simulation.application.ApplicationUtils;
 import com.tram.network.simulation.data.CityMap;
 import com.tram.network.simulation.model.nodes.Node;
 import com.tram.network.simulation.model.timetables.DepartureTime;
@@ -15,7 +16,7 @@ public class GlobalTimer implements Timer {
     private List<Path> pathNetwork;
     private List<Node> nodeNetwork;
     private DepartureTime currentTime = new DepartureTime(0, 0, 0);
-    private Integer oneStepTime = 5;
+    private Integer oneStepTime = ApplicationUtils.globalOneStepTime;
     private Boolean[] randomEventOnTram;
     private int[] durationOfWaiting;
 
@@ -31,7 +32,7 @@ public class GlobalTimer implements Timer {
 
                 if (cell.getState() == TramState.TRAM) {
                     trams.add(
-                            new TramStatus(cell.getLine(), path.toString(), path.getCoordsByProgress(progress), progress, cell.getOfficialLine())
+                            new TramStatus(cell.getId(), cell.getLine(), path.toString(), path.getCoordsByProgress(progress), progress, cell.getOfficialLine())
                     );
                 }
             }

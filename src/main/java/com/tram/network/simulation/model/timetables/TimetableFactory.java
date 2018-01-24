@@ -30,7 +30,8 @@ public class TimetableFactory {
                     if (!(tokens[0].isEmpty() || tokens[i].isEmpty()))
                     timetable.add(new DepartureTime(
                             Integer.parseInt(tokens[0]),
-                            Integer.parseInt(tokens[i])
+                            Integer.parseInt(tokens[i]),
+                            0
                     ));
                 }
             }

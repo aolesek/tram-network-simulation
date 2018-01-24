@@ -6,12 +6,29 @@ public class Cell {
     private Integer coords = 0;
     private Line line;
     private Line officialLine;
+    private int id;
 
     public Cell(TramState s, int c, Line l) {
         this.state = s;
         this.coords = c;
         this.line = l;
         this.officialLine = new Line(l.getNumber(), l.getDirection());
+    }
+
+    public Cell(int id, TramState s, int c, Line l) {
+        this.state = s;
+        this.coords = c;
+        this.line = l;
+        this.officialLine = new Line(l.getNumber(), l.getDirection());
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Line getOfficialLine() {
