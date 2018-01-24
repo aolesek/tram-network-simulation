@@ -40,6 +40,7 @@ public class LoopNode implements Node {
                             tram.getId(), tram.getLine(), name, coordinates, 1.0,tram.getOfficialLine()
                     )
             );
+            return trams;
         }
 
         return trams;

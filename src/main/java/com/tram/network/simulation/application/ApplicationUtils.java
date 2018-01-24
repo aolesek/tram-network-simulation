@@ -12,12 +12,12 @@ public class ApplicationUtils {
     public volatile static int defaultTimeBreak = 200;
     public volatile static double normalTrafficVelocityFactor = 2.2;
     public volatile static double highTrafficVelocityFactor = 1.2;
-    public volatile static int currentId = 0;
+    public volatile static long currentId = 0;
     public volatile static List<String> missingTramNodes = new ArrayList<>();
     public volatile static List<Integer> invertedLines = new ArrayList<>();
 
 
-    public static int getId() {
+    public static long getId() {
         currentId++;
         return currentId;
     }

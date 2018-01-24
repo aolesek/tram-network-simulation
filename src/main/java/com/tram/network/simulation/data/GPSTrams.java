@@ -63,7 +63,7 @@ public class GPSTrams {
 
                     double longitude = vehicle.get("longitude").getAsDouble() / 3600000.0;
                     double latitude = vehicle.get("latitude").getAsDouble() / 3600000.0;
-                    TramStatus gpsTram = new TramStatus(-1,null,name,new Coords2D(longitude,latitude),0.0,null);
+                    TramStatus gpsTram = new TramStatus(Long.parseLong(vehicle.get("id").getAsString().substring(10)),null,name,new Coords2D(longitude,latitude),0.0,null);
                     trams.add(gpsTram);
                 }
             }

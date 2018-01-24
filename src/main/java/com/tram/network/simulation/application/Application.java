@@ -26,10 +26,16 @@ public class Application {
 
 
         GlobalTimer timer = new GlobalTimer();
-        timer.setCurrentTime(new DepartureTime(4, 0, 0));
+        timer.setCurrentTime(new DepartureTime(4, 35, 0));
 
+
+        //Lines with inverted direction (to provide correct order of timetables)
         List<Integer> invertedOnes = new ArrayList<>();
         invertedOnes.add(2);
+        invertedOnes.add(8);
+        invertedOnes.add(9);
+        invertedOnes.add(11);
+        //invertedOnes.add(13);
 
         ApplicationUtils.invertedLines.addAll(invertedOnes);
 

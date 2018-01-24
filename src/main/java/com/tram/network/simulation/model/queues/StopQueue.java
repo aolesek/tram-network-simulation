@@ -81,7 +81,7 @@ public class StopQueue implements Queue {
             if (timetables.containsKey(line)) {
                 Timetable lineTimetable = timetables.get(line);
 
-                if (lines.contains(line) && (lineTimetable != null) && lineTimetable.isItDepartureTime() ) {
+                if (lines.contains(line) && (lineTimetable != null) && lineTimetable.isItDepartureTime()  ) {
                     trams.remove(tram);
                     if (startingTrams.contains(tram))
                         startingTrams.remove(tram);
@@ -111,14 +111,14 @@ public class StopQueue implements Queue {
 //        if ((t!=null)) {
 //            t.isThereADelay(null,name);
 //        }
-        Line checkedLine = new Line(6, LineDirection.NE);
+        Line checkedLine = new Line(1, LineDirection.NE);
         Timetable t = timetables.get(checkedLine);
 
         if ((t!=null)) {
             t.isThereADelay(checkedLine,name);
         }
 
-        checkedLine = new Line(6, LineDirection.SW);
+        checkedLine = new Line(1, LineDirection.SW);
         t = timetables.get(checkedLine);
 
         if ((t!=null)) {

@@ -71,7 +71,15 @@
         <textarea id="tracking"></textarea>
         <button onclick="copyclear()">copy&clear</button>
         <button id="hidebutton" onclick="hideTrams()">hide trams</button>
-        <button onclick="document.getElementById('tracking').innerHTML = ''">clear</button>
+        <button onclick="document.getElementById('modelTrack').innerHTML = ''">clear model track</button>
+        <button onclick="document.getElementById('gpsTrack').innerHTML = ''">clear gps track</button>
+
+        <input type="text" id="gpsId" placeholder="gps tram id" value="x"/>
+        <input type="text" id="modelId" placeholder="model tram id" value="x"/>
+        <textarea id="gpsTrack"></textarea>
+        <textarea id="modelTrack"></textarea>
+
+
         <p id="copyinfo"></p>
       </div>
     </div>
@@ -84,7 +92,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script>
-      var refreshInterval = 100;
+      var refreshInterval = 1000;
+      var h =0; m =0; s = 0;
 
         function realTime() {
             var xhttp = new XMLHttpRequest();
@@ -141,7 +150,15 @@
 
       }
 
+      var stopped = true;
       function startStop() {
+          if (stopped == false) {
+              stopped = true;
+          } else {
+              stopped = false;
+          }
+
+          alert(stopped);
           var xhttp = new XMLHttpRequest();
           xhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -150,6 +167,7 @@
           };
           xhttp.open("GET", "/startstop", true);
           xhttp.send();
+
 
       }
 
@@ -234,17 +252,28 @@
                       }
                   }
 
+                  var gps
+
                   for (var i = 0; i < gpsobj.length; i++) {
+                      var id = gpsobj[i].id;
+                      console.log(gpsobj[i]);
                       var marker =
                           gpscurrentMarkers.push(L.marker([gpsobj[i].coordinates.y, gpsobj[i].coordinates.x]
                               , {
                                   icon: new L.DivIcon({
                                       className: 'my-div-icon',
-                                      html: '<img class="my-div-image" src="2r.png"/>'+
+                                      html: '<img class="my-div-image" src="2r.png" onclick="alert('+gpsobj[i].id+')"/>'+
                                       '<span class="my-div-span" style="font-size: 8px;">'+gpsobj[i].pathId + '</span>'
                                   })
                               }
                           ).addTo(mymap));
+
+                          if (gpsobj[i].id == document.getElementById("gpsId").value) {
+                              var currentDate = new Date();
+                              document.getElementById("gpsTrack").innerHTML += currentDate.getHours() + ":" + currentDate.getMinutes()+":"+currentDate.getSeconds()+";";
+                              document.getElementById("gpsTrack").innerHTML += gpsobj[i].coordinates.y + "," + gpsobj[i].coordinates.x + ";";
+                              document.getElementById("gpsTrack").innerHTML += "\n";
+                          }
                   }
 
                   if (gpsData) {
@@ -290,11 +319,22 @@
                , {
                    icon: new L.DivIcon({
                        className: 'my-div-icon',
-                       html: '<img class="my-div-image" src="1r.png"/>'+
+                       html: '<img class="my-div-image" src="1r.png" onclick="alert('+obj[i].id+')"/>'+
                              '<span class="my-div-span">'+obj[i].officialLine.number + '>' + obj[i].officialLine.direction +'</span>'
                    })
+
+
                }
              ).addTo(mymap));
+
+              if ((obj[i].id == document.getElementById("modelId").value) && !stopped) {
+                  //alert(obj[i].id)
+                  var currentDate = new Date();
+                  document.getElementById("modelTrack").innerHTML += h + ":" + m+":"+s+";";
+                  document.getElementById("modelTrack").innerHTML += obj[i].coordinates.y + "," + obj[i].coordinates.x + ";";
+                  document.getElementById("modelTrack").innerHTML += "\n";
+
+              }
           }
 
           setTimeout(function () {
@@ -314,6 +354,10 @@
         if (this.readyState == 4 && this.status == 200) {
 
           document.getElementById("time").innerHTML = this.responseText;
+          var obj = JSON.parse(this.responseText);
+          h = obj.hour;
+          m = obj.minute;
+          s = obj.second;
 
           setTimeout(function() {
               time.open("GET", "/time", true);

@@ -8,9 +8,9 @@ public class TramStatus {
     private String pathId;
     private double progress;
     private Coords2D coordinates;
-    private int id;
+    private long id;
 
-    public TramStatus(int id,Line line, String pathId, Coords2D coordinates, double progress, Line officialLine) {
+    public TramStatus(long id,Line line, String pathId, Coords2D coordinates, double progress, Line officialLine) {
         //this.line = line;
         this.officialLine = officialLine;
         this.pathId = pathId;

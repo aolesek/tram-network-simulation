@@ -1,29 +1,34 @@
 package com.tram.network.simulation.model.base;
 
+import com.tram.network.simulation.application.Application;
+import com.tram.network.simulation.application.ApplicationUtils;
+
 public class Cell {
 
     private TramState state = TramState.VOID;
     private Integer coords = 0;
     private Line line;
     private Line officialLine;
-    private int id;
+    private long id;
 
     public Cell(TramState s, int c, Line l) {
         this.state = s;
         this.coords = c;
         this.line = l;
         this.officialLine = new Line(l.getNumber(), l.getDirection());
+        this.id = ApplicationUtils.getId();
     }
 
-    public Cell(int id, TramState s, int c, Line l) {
+    public Cell(long id, TramState s, int c, Line l) {
         this.state = s;
         this.coords = c;
         this.line = l;
         this.officialLine = new Line(l.getNumber(), l.getDirection());
         this.id = id;
+        this.id = ApplicationUtils.getId();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
